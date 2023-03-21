@@ -3,7 +3,7 @@ import { protectedProcedure, createTRPCRouter } from '../trpc'
 
 export const likerouter = createTRPCRouter({
   addLike: protectedProcedure
-    .input(z.object({ userId: z.union([z.string(), z.undefined()]), productId: z.any() }))
+    .input(z.object({ userId: z.union([z.string(), z.undefined()]), productId: z.string() }))
     .mutation(async ({ input, ctx }) => {
       if (typeof input.userId === 'string') {
         return await ctx.prisma.likedProduct.create({
@@ -15,7 +15,7 @@ export const likerouter = createTRPCRouter({
       }
     }),
   removeLike: protectedProcedure
-    .input(z.object({ userId: z.union([z.string(), z.undefined()]), productId: z.any() }))
+    .input(z.object({ userId: z.union([z.string(), z.undefined()]), productId: z.string() }))
     .mutation(async ({ input, ctx }) => {
       return await ctx.prisma.likedProduct.deleteMany({
         where: {
@@ -27,8 +27,8 @@ export const likerouter = createTRPCRouter({
   getProductLike: protectedProcedure
     .input(
       z.object({
-        userId: z.any().optional(),
-        productId: z.any(),
+        userId: z.string(),
+        productId: z.string(),
       })
     )
     .query(async ({ input, ctx }) => {

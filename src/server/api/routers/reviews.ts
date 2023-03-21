@@ -28,8 +28,8 @@ export const reviewrouter = createTRPCRouter({
   getReview: publicProcedure
     .input(
       z.object({
-        userId: z.any().optional(),
-        productId: z.any(),
+        userId: z.string(),
+        productId: z.string(),
       })
     )
     .query(async ({ input, ctx }) => {
@@ -48,8 +48,8 @@ export const reviewrouter = createTRPCRouter({
   deleteReview: protectedProcedure
     .input(
       z.object({
-        userId: z.any(),
-        productId: z.any(),
+        userId: z.string(),
+        productId: z.string(),
       })
     )
     .mutation(async ({ input, ctx }) => {

@@ -22,7 +22,7 @@ export const cartrouter = createTRPCRouter({
       }
     }),
   getProductCart: protectedProcedure
-    .input(z.object({ userId: z.any(), productId: z.any() }))
+    .input(z.object({ userId: z.string(), productId: z.string() }))
     .query(async ({ input, ctx }) => {
       const response = await ctx.prisma.cart.findMany({
         where: {
@@ -40,7 +40,7 @@ export const cartrouter = createTRPCRouter({
     .input(
       z.object({
         userId: z.union([z.string(), z.undefined()]),
-        productId: z.any(),
+        productId: z.string(),
       })
     )
     .mutation(async ({ input, ctx }) => {
