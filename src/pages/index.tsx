@@ -2,6 +2,8 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import NextImage from "next/image";
 import HeroImg from "../../public/hero.webp";
+import { Button } from "~/components/ui/Button";
+import Link from "next/link";
 
 const Home: NextPage = () => {
   return (
@@ -12,13 +14,14 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        <div className="grid grid-cols-1 grid-rows-[50vh_50vh]">
+        <div className="grid grid-cols-1 grid-rows-[45vh_45vh]">
           <div className="relative">
             <NextImage src={HeroImg} fill style={{ objectFit: "cover" }} alt="" />
           </div>
           <div>
-            <h2 className="text-lg">Meet your new favorite pantry staple!</h2>
-            <button></button>
+            <h1 className="w-[70%] text-center mx-auto my-6">Meet your new favorite pantry staple!</h1>
+            <div className="font-light text-opacity-75 w-[80%] mx-auto text-center">Cook restaurant-quality Asian dishes in under 30 minutes with our meal starters.</div>
+            <div className="w-48 mx-auto my-6"><Button href="/play">Get Started</Button></div>
           </div>
         </div>
       </div>

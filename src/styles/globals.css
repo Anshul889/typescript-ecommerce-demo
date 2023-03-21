@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "Mariposa";
+  src: url("../../public/fonts/Mariposa.otf");
+}
+
+* {
+  @apply bg-primary text-darkred font-mariposa
+}
+
+h1{
+  @apply text-4xl font-normal
+}
