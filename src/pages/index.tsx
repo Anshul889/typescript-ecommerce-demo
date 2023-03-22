@@ -2,7 +2,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import NextImage from "next/image";
 import HeroImg from "../../public/hero.webp";
-import { Button } from "~/components/ui/Button";
+import { Button } from "@ui/Button";
 import Link from "next/link";
 
 const Home: NextPage = () => {
@@ -21,7 +21,7 @@ const Home: NextPage = () => {
           <div>
             <h1 className="w-[70%] text-center mx-auto my-6">Meet your new favorite pantry staple!</h1>
             <div className="font-light text-opacity-75 w-[80%] mx-auto text-center">Cook restaurant-quality Asian dishes in under 30 minutes with our meal starters.</div>
-            <div className="w-48 mx-auto my-6"><Button href="/play">Get Started</Button></div>
+            <div className="mx-auto w-44 my-6"><Button href="/meal-starters">Shop Now</Button></div>
           </div>
         </div>
       </div>
