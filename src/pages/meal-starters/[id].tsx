@@ -5,6 +5,8 @@ import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import NextImage from "next/image";
 import Image from "next/image";
+import { Disclosure } from "@headlessui/react";
+import { ChevronUpIcon } from "@heroicons/react/20/solid";
 
 const Product: NextPage = () => {
   const [reviewform, toggle] = useState(true);
@@ -20,7 +22,7 @@ const Product: NextPage = () => {
       enabled: !!query?.id,
     }
   );
-  const utils = api.useContext()
+  const utils = api.useContext();
 
   //Like functions
   // const { mutate: addLike } = api.likes.addLike.useMutation({});
@@ -175,7 +177,7 @@ const Product: NextPage = () => {
     return (
       <div className="mt-6">
         <div>
-          <div className="grid grid-cols-[2px_repeat(4,80%)_2px] gap-6 overflow-scroll scrollbar-hide">
+          <div className="scrollbar-hide grid grid-cols-[2px_repeat(4,80%)_2px] gap-6 overflow-scroll">
             <div></div>
             <div className="relative h-[80vw] w-full">
               <NextImage src={data?.imageURL || ""} alt="" fill />
@@ -192,10 +194,53 @@ const Product: NextPage = () => {
             <div></div>
           </div>
           <div className="mx-auto my-6 w-[90%]">
-            <h1>{data?.name}</h1>
-            <div className="font-archivo my-2 ">${data?.price}</div>
-            <div className="font-archivo my-2 ">{data?.description1}</div>
-            <div className="font-archivo my-2 ">{data?.description2}</div>
+            <div>
+              <h1>{data?.name}</h1>
+              <div className="my-2 font-archivo ">${data?.price}.00</div>
+              <div className="my-2 font-archivo ">{data?.description1}</div>
+              <div className="my-2 font-archivo ">{data?.description2}</div>
+            </div>
+            <div className="my-6">
+              <Disclosure>
+                {({ open }) => (
+                  <>
+                    <Disclosure.Button className="my-2 grid w-full grid-cols-[6fr_20px] border-opacity-50 border-t-[0.1px] border-solid border-neutral-500 py-2">
+                      <div className="align-self-start text-start font-archivo text-xl font-bold">
+                        Ingredients
+                      </div>
+                      <ChevronUpIcon
+                        className={`${
+                          open ? "rotate-180 transform" : ""
+                        } mt-1 h-5 w-5 `}
+                      />
+                    </Disclosure.Button>
+                    <Disclosure.Panel className="font-archivo mb-4">
+                      {data?.ingredients}
+                    </Disclosure.Panel>
+                  </>
+                )}
+              </Disclosure>
+              <Disclosure>
+                {({ open }) => (
+                  <>
+                    <Disclosure.Button className="my-2 grid-cols-[6fr_20px] grid w-full border-t-[0.1px] border-solid border-neutral-500 border-opacity-50 py-2">
+                      <div className="align-self-start text-start font-archivo text-xl font-bold">
+                        Nutrition Info
+                      </div>
+                      <ChevronUpIcon
+                        className={`${
+                          open ? "rotate-180 transform" : ""
+                        } mt-1 h-5 w-5 `}
+                      />
+                    </Disclosure.Button>
+                    <Disclosure.Panel className="font-archivo mb-4">
+                      <div className="font-archivo">Servings: {data?.servings}</div>
+                      <div className="font-archivo">ServingSize: {data?.servingsSize}</div>
+                    </Disclosure.Panel>
+                  </>
+                )}
+              </Disclosure>
+            </div>
           </div>
         </div>
       </div>
