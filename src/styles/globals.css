@@ -7,6 +7,11 @@
   src: url("../../public/fonts/Mariposa.otf");
 }
 
+@font-face{
+  font-family: "Archivo";
+  src: url("../../public/fonts/archivo.ttf")
+}
+
 * {
   @apply bg-primary text-darkred font-mariposa
 }

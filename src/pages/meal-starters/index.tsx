@@ -18,7 +18,7 @@ const Index = () => {
         <div className="my-6 grid grid-cols-1">
           {data?.map((product, index) => {
             return (
-              <Link href={`/meal-startes/${product.id}`} className="my-4" key={index}>
+              <Link href={`/meal-starters/${product.id}`} className="my-4" key={index}>
                 <div className="relative grid h-[90vw] grid-cols-1">
                   <NextImage
                     src={product.imageURL}

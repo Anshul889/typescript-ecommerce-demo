@@ -10,7 +10,8 @@ const config = {
         'darkred': 'rgb(61, 8, 27)'
       },
       fontFamily: {
-        mariposa: ['Mariposa', 'sans']
+        mariposa: ['Mariposa', 'sans'],
+        archivo: ['Archivo']
       }
     },
   },
