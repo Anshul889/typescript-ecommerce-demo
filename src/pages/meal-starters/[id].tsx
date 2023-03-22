@@ -20,7 +20,7 @@ const Product: NextPage = () => {
       enabled: !!query?.id,
     }
   );
-  const utils = api.useContext();
+  const utils = api.useContext()
 
   //Like functions
   // const { mutate: addLike } = api.likes.addLike.useMutation({});
@@ -39,20 +39,20 @@ const Product: NextPage = () => {
   //       },
   //     }
   //   );
-  const { mutate: removeLike } = api.likes.removeLike.useMutation({});
+  // const { mutate: removeLike } = api.likes.removeLike.useMutation({});
 
-  const handleAddLike = () => {
-    setUserLike(true);
-    if (typeof query.id === "string") {
-      addLike({ userId: session?.user?.id, productId: query?.id });
-    }
-  };
-  const handleRemoveLike = () => {
-    setUserLike(false);
-    if (typeof query.id === "string") {
-      removeLike({ userId: session?.user?.id, productId: query?.id });
-    }
-  };
+  // const handleAddLike = () => {
+  //   setUserLike(true);
+  //   if (typeof query.id === "string") {
+  //     addLike({ userId: session?.user?.id, productId: query?.id });
+  //   }
+  // };
+  // const handleRemoveLike = () => {
+  //   setUserLike(false);
+  //   if (typeof query.id === "string") {
+  //     removeLike({ userId: session?.user?.id, productId: query?.id });
+  //   }
+  // };
 
   //Review functions
   // if (typeof query.id === "string" && typeof session?.user.id === "string") {
