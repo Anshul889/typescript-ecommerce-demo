@@ -175,7 +175,7 @@ const Product: NextPage = () => {
     return (
       <div className="mt-6">
         <div>
-          <div className="ml-6 grid grid-cols-[repeat(4,80%)_2px] gap-6">
+          <div className="ml-6 grid grid-cols-[repeat(4,80%)_2px] gap-6 overflow-scroll scrollbar-hide">
             <div className="relative h-[80vw] w-full">
               <NextImage src={data?.imageURL || ""} alt="" fill />
             </div>
