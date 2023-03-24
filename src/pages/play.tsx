@@ -10,6 +10,7 @@ const Play = () => {
         <div className=" border border-black bg-blue-500"></div>
         <div className="border border-black"></div>
         <div className="border border-black"></div>
+        <div className=""></div>
       </div>
     </>
   );

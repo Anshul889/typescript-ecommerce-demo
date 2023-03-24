@@ -1,28 +1,33 @@
-import { z } from 'zod'
-import { protectedProcedure, createTRPCRouter } from '../trpc'
+import { z } from "zod";
+import { protectedProcedure, createTRPCRouter } from "../trpc";
 
 export const likerouter = createTRPCRouter({
   addLike: protectedProcedure
-    .input(z.object({ userId: z.union([z.string(), z.undefined()]), productId: z.string() }))
+    .input(
+      z.object({
+        userId: z.string(),
+        productId: z.string(),
+      })
+    )
     .mutation(async ({ input, ctx }) => {
-      if (typeof input.userId === 'string') {
+      if (typeof input.userId === "string") {
         return await ctx.prisma.likedProduct.create({
           data: {
             userId: input.userId,
             productId: input.productId,
           },
-        })
+        });
       }
     }),
   removeLike: protectedProcedure
-    .input(z.object({ userId: z.union([z.string(), z.undefined()]), productId: z.string() }))
+    .input(z.object({ userId: z.string(), productId: z.string() }))
     .mutation(async ({ input, ctx }) => {
       return await ctx.prisma.likedProduct.deleteMany({
         where: {
           userId: input.userId,
           productId: input.productId,
         },
-      })
+      });
     }),
   getProductLike: protectedProcedure
     .input(
@@ -37,16 +42,16 @@ export const likerouter = createTRPCRouter({
           userId: input.userId,
           productId: input.productId,
         },
-      })
-      if (typeof response[0] === 'object') {
-        return { result: 'epic' }
+      });
+      if (typeof response[0] === "object") {
+        return { result: "epic" };
       } else {
-        return { result: 'fail' }
+        return { result: "fail" };
       }
     }),
 
   getUserLikes: protectedProcedure
-    .input(z.object({ userId: z.union([z.string(), z.undefined()]) }))
+    .input(z.object({ userId: z.string() }))
     .query(async ({ input, ctx }) => {
       return await ctx.prisma.likedProduct.findMany({
         where: {
@@ -62,6 +67,6 @@ export const likerouter = createTRPCRouter({
             },
           },
         },
-      })
+      });
     }),
-})
+});

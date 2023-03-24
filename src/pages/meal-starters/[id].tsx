@@ -25,148 +25,148 @@ const Product: NextPage = () => {
   const utils = api.useContext();
 
   //Like functions
-  // const { mutate: addLike } = api.likes.addLike.useMutation({});
-  //   const { data: checkUserLike } = api.likes.getProductLike.useQuery(
-  //     {
-  //       userId: session?.user?.id,
-  //       productId: query?.id,
-  //     },
-  //     {
-  //       enabled: !!session,
-  //       onSettled: (checkUserLike) => {
-  //         if (checkUserLike?.result === "epic") {
-  //           setUserLike(true);
-  //         }
-  //         console.log("userlike", checkUserLike);
-  //       },
-  //     }
-  //   );
-  // const { mutate: removeLike } = api.likes.removeLike.useMutation({});
+  const { mutate: addLike } = api.likes.addLike.useMutation({});
+  const { data: checkUserLike } = api.likes.getProductLike.useQuery(
+    {
+      userId: session?.user?.id as string,
+      productId: query?.id as string,
+    },
+    {
+      enabled: !!session,
+      onSettled: (checkUserLike) => {
+        if (checkUserLike?.result === "epic") {
+          setUserLike(true);
+        }
+        console.log("userlike", checkUserLike);
+      },
+    }
+  );
+  const { mutate: removeLike } = api.likes.removeLike.useMutation({});
 
-  // const handleAddLike = () => {
-  //   setUserLike(true);
-  //   if (typeof query.id === "string") {
-  //     addLike({ userId: session?.user?.id, productId: query?.id });
-  //   }
-  // };
-  // const handleRemoveLike = () => {
-  //   setUserLike(false);
-  //   if (typeof query.id === "string") {
-  //     removeLike({ userId: session?.user?.id, productId: query?.id });
-  //   }
-  // };
+  const handleAddLike = () => {
+    setUserLike(true);
+    addLike({ userId: session?.user?.id as string, productId: query?.id as string });
+  };
+  const handleRemoveLike = () => {
+    setUserLike(false);
+    if (typeof query.id === "string") {
+      removeLike({ userId: session?.user?.id as string, productId: query?.id });
+    }
+  };
 
-  //Review functions
-  // if (typeof query.id === "string" && typeof session?.user.id === "string") {
-  //   const { data: isAuthor, refetch: refetchAuthor } =
-  //     api.reviews.getReview.useQuery(
-  //       {
-  //         userId: session?.user?.id,
-  //         productId: query?.id,
-  //       },
-  //       {
-  //         enabled: !!session,
-  //         onSuccess: (isAuthor) => {
-  //           console.log("author:", isAuthor.result);
-  //         },
-  //       }
-  //     );
-  // }
-  // const { mutate: deleteReview } = api.reviews.deleteReview.useMutation({
-  //   onMutate: () => {
-  //     setLoading(true);
-  //   },
-  //   onSuccess: async () => {
-  //     toggle(true);
-  //     await refetch();
-  //     await refetch;
-  //     setLoading(false);
-  //   },
-  // });
-  // const { mutate: addReview } = api.reviews.addReview.useMutation({
-  //   onMutate: () => {
-  //     setLoading(true);
-  //   },
-  //   onSuccess: async () => {
-  //     await refetch();
-  //     await refetchAuthor();
-  //     toggle(false);
-  //     setLoading(false);
-  //   },
-  // });
+  // Review functions
+
+  const { data: isAuthor, refetch: refetchAuthor } =
+    api.reviews.getReview.useQuery(
+      {
+        userId: session?.user?.id || "",
+        productId: query?.id as string,
+      },
+      {
+        enabled: !!query.id,
+        onSuccess: (isAuthor) => {
+          console.log("author:", isAuthor.result);
+        },
+      }
+    );
+  const { mutate: deleteReview } = api.reviews.deleteReview.useMutation({
+    onMutate: () => {
+      setLoading(true);
+    },
+    onSuccess: async () => {
+      toggle(true);
+      await refetch();
+      await refetchAuthor();
+      setLoading(false);
+    },
+  });
+  const { mutate: addReview } = api.reviews.addReview.useMutation({
+    onMutate: () => {
+      setLoading(true);
+    },
+    onSuccess: async () => {
+      await refetch();
+      await refetchAuthor();
+      toggle(false);
+      setLoading(false);
+    },
+  });
 
   //Cart Functions with optimistic updates
+  const { mutate: addToCart } = api.cart.addToCart.useMutation({
+    onMutate: async ({ userId, productId, quantity }) => {
+      await utils.cart.getUserCart.cancel();
 
-  // const { mutate: addToCart } = api.cart.addToCart.useMutation({
-  //   onMutate: async ({ userId, productId }) => {
-  //     await utils.cart.getUserCart.cancel();
-  //     utils.cart.getUserCart.setData({ userId }, (prevEntries: any) => {
-  //       const item = {
-  //         name: data?.name || "",
-  //         imageURL: data?.imageURL || "",
-  //         price: data?.price || 0,
-  //         id: (productId as string) || "",
-  //       };
-  //       if (prevEntries) {
-  //         return [...prevEntries, { userId, productId, item, quantity: 1 }];
-  //       } else {
-  //         return prevEntries;
-  //       }
-  //     });
-  //   },
-  //   onSettled: async () => {
-  //     await utils.cart.getUserCart.invalidate();
-  //   },
-  // });
+      utils.cart.getUserCart.setData({ userId }, (prevEntries) => {
+          const product = {
+            name: data?.name as string,
+            imageURL: data?.imageURL as string,
+            price: data?.price as number,
+            id: productId,
+          };
+          if (prevEntries) {
+            return [...prevEntries, {userId, productId, quantity, product}];
+          } else {
+            return prevEntries;
+          }
+        });
+    },
+    onSettled: async () => {
+      await utils.cart.getUserCart.invalidate();
+    },
+  });
 
-  // const { mutate: removeFromCart } = api.cart.removeFromCart.useMutation({
-  //   onMutate: async ({ userId, productId }) => {
-  //     await utils.cart.getUserCart.cancel();
-  //     utils.cart.getUserCart.setData({ userId }, (prevEntries) => {
-  //       if (prevEntries) {
-  //         return [
-  //           ...prevEntries.filter((product) => product.productId !== productId),
-  //         ];
-  //       } else {
-  //         return prevEntries;
-  //       }
-  //     });
-  //   },
-  //   onSettled: async () => {
-  //     await utils.cart.getUserCart.invalidate();
-  //   },
-  // });
+  const { mutate: removeFromCart } = api.cart.removeFromCart.useMutation({
+    onMutate: async ({ userId, productId }) => {
+      await utils.cart.getUserCart.cancel();
+      utils.cart.getUserCart.setData({ userId }, (prevEntries) => {
+        if (prevEntries) {
+          return [
+            ...prevEntries.filter((product) => product.productId !== productId),
+          ];
+        } else {
+          return prevEntries;
+        }
+      });
+    },
+    onSettled: async () => {
+      await utils.cart.getUserCart.invalidate();
+    },
+  });
 
-  // if (typeof query.id === "string" && typeof session?.user.id === "string") {
-  //   const { data: isProductCart } = api.cart.getProductCart.useQuery(
-  //     {
-  //       userId: session?.user?.id,
-  //       productId: query?.id,
-  //     },
-  //     {
-  //       enabled: !!session,
-  //       onSuccess: (isProductCart) => {
-  //         if (isProductCart.result == "epic") {
-  //           setCart(true);
-  //         } else {
-  //           setCart(false);
-  //         }
-  //       },
-  //     }
-  //   );
-  // }
+  const { data: isProductCart } = api.cart.getProductCart.useQuery(
+    {
+      userId: session?.user?.id as string,
+      productId: query?.id as string,
+    },
+    {
+      enabled: !!session,
+      onSuccess: (isProductCart) => {
+        if (isProductCart.result == "epic") {
+          setCart(true);
+        } else {
+          setCart(false);
+        }
+      },
+    }
+  );
 
-  // const handleAddToCart = () => {
-  //   setCart(true);
-  //   addToCart({ userId: session?.user?.id, productId: query?.id, quantity: 1 });
-  // };
+  const handleAddToCart = () => {
+    setCart(true);
+    addToCart({
+      userId: session?.user?.id as string,
+      productId: query?.id as string,
+      quantity: 1,
+    });
+  };
 
-  // const handleRemoveFromCart = () => {
-  //   setCart(false);
-  //   if (typeof query.id === "string") {
-  //     removeFromCart({ userId: session?.user?.id, productId: query?.id });
-  //   }
-  // };
+  const handleRemoveFromCart = () => {
+    setCart(false);
+    removeFromCart({
+      userId: session?.user?.id as string,
+      productId: query?.id as string,
+    });
+  };
   if (isLoading) {
     return (
       <div className="grid h-[90vh] grid-cols-1 place-content-center">
@@ -204,7 +204,7 @@ const Product: NextPage = () => {
               <Disclosure>
                 {({ open }) => (
                   <>
-                    <Disclosure.Button className="my-2 grid w-full grid-cols-[6fr_20px] border-opacity-50 border-t-[0.1px] border-solid border-neutral-500 py-2">
+                    <Disclosure.Button className="my-2 grid w-full grid-cols-[6fr_20px] border-t-[0.1px] border-solid border-neutral-500 border-opacity-50 py-2">
                       <div className="align-self-start text-start font-archivo text-xl font-bold">
                         Ingredients
                       </div>
@@ -214,7 +214,7 @@ const Product: NextPage = () => {
                         } mt-1 h-5 w-5 `}
                       />
                     </Disclosure.Button>
-                    <Disclosure.Panel className="font-archivo mb-4">
+                    <Disclosure.Panel className="mb-4 font-archivo">
                       {data?.ingredients}
                     </Disclosure.Panel>
                   </>
@@ -223,7 +223,7 @@ const Product: NextPage = () => {
               <Disclosure>
                 {({ open }) => (
                   <>
-                    <Disclosure.Button className="my-2 grid-cols-[6fr_20px] grid w-full border-t-[0.1px] border-solid border-neutral-500 border-opacity-50 py-2">
+                    <Disclosure.Button className="my-2 grid w-full grid-cols-[6fr_20px] border-t-[0.1px] border-solid border-neutral-500 border-opacity-50 py-2">
                       <div className="align-self-start text-start font-archivo text-xl font-bold">
                         Nutrition Info
                       </div>
@@ -233,9 +233,13 @@ const Product: NextPage = () => {
                         } mt-1 h-5 w-5 `}
                       />
                     </Disclosure.Button>
-                    <Disclosure.Panel className="font-archivo mb-4">
-                      <div className="font-archivo">Servings: {data?.servings}</div>
-                      <div className="font-archivo">ServingSize: {data?.servingsSize}</div>
+                    <Disclosure.Panel className="mb-4 font-archivo">
+                      <div className="font-archivo">
+                        Servings: {data?.servings}
+                      </div>
+                      <div className="font-archivo">
+                        ServingSize: {data?.servingsSize}
+                      </div>
                     </Disclosure.Panel>
                   </>
                 )}

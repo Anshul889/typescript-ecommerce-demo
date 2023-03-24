@@ -1,25 +1,23 @@
-import { z } from 'zod'
-import { protectedProcedure, createTRPCRouter } from '../trpc'
+import { z } from "zod";
+import { protectedProcedure, createTRPCRouter } from "../trpc";
 
 export const cartrouter = createTRPCRouter({
   addToCart: protectedProcedure
     .input(
       z.object({
-        userId: z.union([z.string(), z.undefined()]),
-        productId: z.union([z.string(), z.undefined(), z.array(z.string())]),
+        userId: z.string(),
+        productId: z.string(),
         quantity: z.number(),
       })
     )
     .mutation(async ({ input, ctx }) => {
-      if (typeof input.userId === 'string' && typeof input.productId=== 'string') {
-        return await ctx.prisma.cart.create({
-          data: {
-            userId: input.userId,
-            productId: input.productId,
-            quantity: input.quantity,
-          },
-        })
-      }
+      return await ctx.prisma.cart.create({
+        data: {
+          userId: input.userId,
+          productId: input.productId,
+          quantity: input.quantity,
+        },
+      });
     }),
   getProductCart: protectedProcedure
     .input(z.object({ userId: z.string(), productId: z.string() }))
@@ -29,34 +27,34 @@ export const cartrouter = createTRPCRouter({
           userId: input.userId,
           productId: input.productId,
         },
-      })
+      });
       if (response.length === 0) {
-        return { result: 'fail' }
+        return { result: "fail" };
       } else {
-        return { result: 'epic' }
+        return { result: "epic" };
       }
     }),
   removeFromCart: protectedProcedure
     .input(
       z.object({
-        userId: z.union([z.string(), z.undefined()]),
+        userId: z.string(),
         productId: z.string(),
       })
     )
     .mutation(async ({ input, ctx }) => {
-      if (typeof input.userId === 'string') {
+      if (typeof input.userId === "string") {
         return await ctx.prisma.cart.deleteMany({
           where: {
             userId: input.userId,
             productId: input.productId,
           },
-        })
+        });
       }
     }),
   increaseQuantity: protectedProcedure
     .input(
       z.object({
-        userId: z.union([z.string(), z.undefined()]),
+        userId: z.string(),
         productId: z.string(),
       })
     )
@@ -71,12 +69,12 @@ export const cartrouter = createTRPCRouter({
             increment: 1,
           },
         },
-      })
+      });
     }),
   decreaseQuantity: protectedProcedure
     .input(
       z.object({
-        userId: z.union([z.string(), z.undefined()]),
+        userId: z.string(),
         productId: z.string(),
       })
     )
@@ -91,10 +89,10 @@ export const cartrouter = createTRPCRouter({
             decrement: 1,
           },
         },
-      })
+      });
     }),
   getUserCart: protectedProcedure
-    .input(z.object({ userId: z.union([z.string(), z.undefined()]) }))
+    .input(z.object({ userId: z.string() }))
     .query(async ({ input, ctx }) => {
       const response = await ctx.prisma.cart.findMany({
         where: {
@@ -110,8 +108,8 @@ export const cartrouter = createTRPCRouter({
             },
           },
         },
-      })
-      console.log(response)
-      return response
+      });
+      console.log(response);
+      return response;
     }),
-})
+});
