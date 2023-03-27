@@ -18,7 +18,7 @@ const buttonStyles = cva(
     },
     defaultVariants: {
       intent: "primary",
-      fullWidth: true,
+      fullWidth: false,
     },
   }
 );

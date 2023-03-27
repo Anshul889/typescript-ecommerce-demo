@@ -7,6 +7,8 @@ import NextImage from "next/image";
 import Image from "next/image";
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
+import { Button } from "~/components/ui/Button";
+import Modal from "~/components/ui/Modal";
 
 const Product: NextPage = () => {
   const [reviewform, toggle] = useState(true);
@@ -45,7 +47,10 @@ const Product: NextPage = () => {
 
   const handleAddLike = () => {
     setUserLike(true);
-    addLike({ userId: session?.user?.id as string, productId: query?.id as string });
+    addLike({
+      userId: session?.user?.id as string,
+      productId: query?.id as string,
+    });
   };
   const handleRemoveLike = () => {
     setUserLike(false);
@@ -98,18 +103,18 @@ const Product: NextPage = () => {
       await utils.cart.getUserCart.cancel();
 
       utils.cart.getUserCart.setData({ userId }, (prevEntries) => {
-          const product = {
-            name: data?.name as string,
-            imageURL: data?.imageURL as string,
-            price: data?.price as number,
-            id: productId,
-          };
-          if (prevEntries) {
-            return [...prevEntries, {userId, productId, quantity, product}];
-          } else {
-            return prevEntries;
-          }
-        });
+        const product = {
+          name: data?.name as string,
+          imageURL: data?.imageURL as string,
+          price: data?.price as number,
+          id: productId,
+        };
+        if (prevEntries) {
+          return [...prevEntries, { userId, productId, quantity, product }];
+        } else {
+          return prevEntries;
+        }
+      });
     },
     onSettled: async () => {
       await utils.cart.getUserCart.invalidate();
@@ -196,9 +201,20 @@ const Product: NextPage = () => {
           <div className="mx-auto my-6 w-[90%]">
             <div>
               <h1>{data?.name}</h1>
-              <div className="my-2 font-archivo ">${data?.price}.00</div>
-              <div className="my-2 font-archivo ">{data?.description1}</div>
-              <div className="my-2 font-archivo ">{data?.description2}</div>
+              <div className="my-4 font-archivo ">${data?.price}.00</div>
+              {session && userLike && (
+                <Button fullWidth onClick={handleRemoveLike}>
+                  Remove From Wishlist
+                </Button>
+              )}
+              {session && !userLike && (
+                <Button fullWidth onClick={handleAddLike}>
+                  Add to Wishlist
+                </Button>
+              )}
+              {!session && <Modal />}
+              <div className="my-4 font-archivo ">{data?.description1}</div>
+              <div className="my-4 font-archivo ">{data?.description2}</div>
             </div>
             <div className="my-6">
               <Disclosure>
