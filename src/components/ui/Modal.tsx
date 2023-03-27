@@ -1,8 +1,23 @@
-import React, {Fragment, useState } from "react";
-import { Dialog, Transition } from '@headlessui/react'
+import React, { Fragment, useState } from "react";
+import { Dialog, Transition } from "@headlessui/react";
 import { Button } from "./Button";
+import { signIn, signOut } from "next-auth/react";
 
-const Modal = () => {
+type ModalProps = {
+  buttonText: string;
+  title: string;
+  description?: string;
+  buttonAction: string;
+  buttonLink?: string;
+};
+
+const Modal = ({
+  buttonText,
+  title,
+  description,
+  buttonAction,
+  buttonLink,
+}: ModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const closeModal = () => {
@@ -16,11 +31,7 @@ const Modal = () => {
   return (
     <>
       <div className="">
-        <Button
-          onClick={openModal}
-        >
-          Open dialog
-        </Button>
+        <Button onClick={openModal}>{buttonText}</Button>
       </div>
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
@@ -52,21 +63,20 @@ const Modal = () => {
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                   >
-                    Payment successful
+                    {title}
                   </Dialog.Title>
-                  <div className="mt-2">
-                    <p className="text-sm text-gray-500">
-                      Your payment has been successfully submitted. We’ve sent
-                      you an email with all of the details of your order.
-                    </p>
-                  </div>
+                  {description && (
+                    <div className="mt-2">
+                      <p className="text-sm text-gray-500">{description}</p>
+                    </div>
+                  )}
 
                   <div className="mt-4">
-                    <Button
-                      onClick={closeModal}
-                    >
-                      Got it, thanks!
-                    </Button>
+                    {buttonLink ? (
+                      <Button onClick={() => void signIn()}>{buttonAction}</Button>
+                    ) : (
+                      <Button onClick={() => void signOut()}>Logout</Button>
+                    )}
                   </div>
                 </Dialog.Panel>
               </Transition.Child>

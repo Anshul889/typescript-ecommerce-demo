@@ -17,7 +17,7 @@ const Play = () => {
 
         <div className="border border-black">{data?.user.name}</div>
       </div>
-      <Modal />
+      <Modal title="Login to continue" buttonText="Add To Wishlist" buttonAction="Login" buttonLink="/auth/signin"/>
     </>
   );
 };

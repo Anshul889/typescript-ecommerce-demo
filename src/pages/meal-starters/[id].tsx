@@ -212,7 +212,7 @@ const Product: NextPage = () => {
                   Add to Wishlist
                 </Button>
               )}
-              {!session && <Modal />}
+              {!session && <Modal buttonText="Add To Wishlist" title="Login To continue" buttonAction="Login" buttonLink="/auth/signin"/>}
               <div className="my-4 font-archivo ">{data?.description1}</div>
               <div className="my-4 font-archivo ">{data?.description2}</div>
             </div>
