@@ -205,21 +205,54 @@ const Product: NextPage = () => {
           <div className="mx-auto my-6 w-[90%]">
             <div>
               <h1>{data?.name}</h1>
-              <div className="grid grid-cols-[0.3fr_1fr] gap-6 my-4">
-              <Listboxselect items={itemQuantity} selectedItem={selectedNumber} setSelectedItem={setSelectedNumber}/>
-              <div className="my-4 font-archivo ">${data?.price}.00</div>
+              <div className="my-4 grid grid-cols-[0.3fr_1fr] gap-6">
+                <Listboxselect
+                  items={itemQuantity}
+                  selectedItem={selectedNumber}
+                  setSelectedItem={setSelectedNumber}
+                />
+                <div className="my-4 font-archivo ">${data?.price}.00</div>
               </div>
-              {session && userLike && (
-                <Button fullWidth onClick={handleRemoveLike}>
-                  Remove From Wishlist
-                </Button>
-              )}
-              {session && !userLike && (
-                <Button fullWidth onClick={handleAddLike}>
-                  Add to Wishlist
-                </Button>
-              )}
-              {!session && <Modal buttonText="Add To Wishlist" title="Login To continue" buttonAction="Login" buttonLink="/auth/signin"/>}
+              <div>
+                {session && userLike && (
+                  <Button fullWidth onClick={handleRemoveLike}>
+                    Remove From Wishlist
+                  </Button>
+                )}
+                {session && !userLike && (
+                  <Button fullWidth onClick={handleAddLike}>
+                    Add to Wishlist
+                  </Button>
+                )}
+                {!session && (
+                  <Modal
+                    buttonText="Add To Wishlist"
+                    title="Login To continue"
+                    buttonAction="Login"
+                    buttonLink="/auth/signin"
+                  />
+                )}
+              </div>
+              <div className="my-6">
+                {session && isCart && (
+                  <Button fullWidth onClick={handleRemoveFromCart}>
+                    Remove From Cart
+                  </Button>
+                )}
+                {session && !isCart && (
+                  <Button fullWidth onClick={handleAddToCart}>
+                    Add to Cart
+                  </Button>
+                )}
+                {!session && (
+                  <Modal
+                    buttonText="Add To Cart"
+                    title="Login To continue"
+                    buttonAction="Login"
+                    buttonLink="/auth/signin"
+                  />
+                )}
+              </div>
               <div className="my-4 font-archivo ">{data?.description1}</div>
               <div className="my-4 font-archivo ">{data?.description2}</div>
             </div>

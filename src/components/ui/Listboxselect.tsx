@@ -4,7 +4,7 @@ import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 
 type Props = {
   selectedItem: number;
-  setSelectedItem: Dispatch<SetStateAction<void>>;
+  setSelectedItem: React.Dispatch<React.SetStateAction<number>>;
   items: number[];
 };
 
