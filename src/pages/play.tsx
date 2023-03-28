@@ -3,10 +3,15 @@ import { Dialog, Transition, Combobox } from "@headlessui/react";
 import { Button } from "~/components/ui/Button";
 import { useSession } from "next-auth/react";
 import Modal from "~/components/ui/Modal";
+import Listboxselect from "~/components/ui/Listboxselect";
+
+const itemQuantity = [1, 2, 3, 4, 5];
 
 const Play = () => {
   const [counter, setCounter] = useState(0);
+  const [selectedNumber, setSelectedNumber] = useState(1);
   const {data} = useSession()
+
   return (
     <>
       <div className="m-4 grid grid-cols-4 gap-4 p-4">
@@ -18,6 +23,7 @@ const Play = () => {
         <div className="border border-black">{data?.user.name}</div>
       </div>
       <Modal title="Login to continue" buttonText="Add To Wishlist" buttonAction="Login" buttonLink="/auth/signin"/>
+      <Listboxselect items={itemQuantity} selectedItem={selectedNumber} setSelectedItem={setSelectedNumber}/>
     </>
   );
 };

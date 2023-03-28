@@ -9,12 +9,16 @@ import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
 import { Button } from "~/components/ui/Button";
 import Modal from "~/components/ui/Modal";
+import Listboxselect from "~/components/ui/Listboxselect";
+
+const itemQuantity = [1, 2, 3, 4, 5];
 
 const Product: NextPage = () => {
   const [reviewform, toggle] = useState(true);
   const [loadingReview, setLoading] = useState(false);
   const [userLike, setUserLike] = useState(false);
   const [isCart, setCart] = useState(false);
+  const [selectedNumber, setSelectedNumber] = useState(1);
 
   const { query } = useRouter();
   const { data: session } = useSession();
@@ -161,7 +165,7 @@ const Product: NextPage = () => {
     addToCart({
       userId: session?.user?.id as string,
       productId: query?.id as string,
-      quantity: 1,
+      quantity: selectedNumber,
     });
   };
 
@@ -201,7 +205,10 @@ const Product: NextPage = () => {
           <div className="mx-auto my-6 w-[90%]">
             <div>
               <h1>{data?.name}</h1>
+              <div className="grid grid-cols-[0.3fr_1fr] gap-6 my-4">
+              <Listboxselect items={itemQuantity} selectedItem={selectedNumber} setSelectedItem={setSelectedNumber}/>
               <div className="my-4 font-archivo ">${data?.price}.00</div>
+              </div>
               {session && userLike && (
                 <Button fullWidth onClick={handleRemoveLike}>
                   Remove From Wishlist
