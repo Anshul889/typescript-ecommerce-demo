@@ -56,6 +56,7 @@ export const cartrouter = createTRPCRouter({
       z.object({
         userId: z.string(),
         productId: z.string(),
+        quantity: z.number(),
       })
     )
     .mutation(async ({ input, ctx }) => {

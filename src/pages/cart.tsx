@@ -18,12 +18,11 @@ const Cart: NextPage = () => {
   );
   const utils = api.useContext();
   let subtotal;
-  if(data) { 
+  if (data) {
     subtotal = data.reduce((acc, curr) => {
       return acc + curr.quantity * curr.product.price;
     }, 0);
   }
-
 
   const { mutate: removeFromCart } = api.cart.removeFromCart.useMutation({
     onMutate: async ({ userId, productId }) => {
@@ -43,13 +42,54 @@ const Cart: NextPage = () => {
     },
   });
 
+  const { mutate: incrementQuantity } = api.cart.increaseQuantity.useMutation({
+    onMutate: async ({ userId, productId, quantity }) => {
+      await utils.cart.getUserCart.cancel();
+      const response = utils.products.getOne.getData({ id: productId });
+      const product = {
+        name: response?.name as string,
+        price: response?.price as number,
+        imageURL: response?.imageURL as string,
+        id: response?.id as string,
+      }
+      utils.cart.getUserCart.setData({ userId }, (prevEntries) => { 
+        if (prevEntries) {
+          const removed =  [...prevEntries.filter((product) => product.productId !== productId)]
+          const newArr = [
+            ...removed, {
+              userId,
+              productId,
+              quantity: quantity+ 1,
+              product,
+            }
+          ];
+          return newArr
+        } else {
+          return prevEntries;
+        }
+      });
+    },
+    onSettled: async () => {
+      await utils.cart.getUserCart.invalidate();
+    },
+  });
+
   const handleRemoveFromCart = (id: string) => {
     removeFromCart({ userId: session?.user?.id as string, productId: id });
   };
+
+  const handleIncrement = (id: string, quantity: number) => {
+    incrementQuantity({
+      userId: session?.user?.id as string,
+      productId: id,
+      quantity: quantity,
+    });
+  };
+
   if (isLoading) {
     return (
-      <div className="grid">
-        <div className="">Loading...</div>
+      <div className="grid h-[90vh] grid-cols-1">
+        <h1 className="place-self-center">Loading...</h1>
       </div>
     );
   } else {
@@ -75,7 +115,17 @@ const Cart: NextPage = () => {
                 <div className="text-right">
                   ${product.quantity * product.product.price}.00
                 </div>
-                <div>{product.quantity}</div>
+                <div>
+                  <span>-</span>
+                  <span>{product.quantity}</span>
+                  <span
+                    onClick={() =>
+                      handleIncrement(product.productId, product.quantity)
+                    }
+                  >
+                    +
+                  </span>
+                </div>
                 <div
                   onClick={() => handleRemoveFromCart(product.productId)}
                   className="point text-right text-red-500 underline"
@@ -99,8 +149,7 @@ const Cart: NextPage = () => {
         )}
         {data?.length !== 0 && (
           <div className="text-center text-xl font-bold">
-            Subtotal $
-            {subtotal}.00
+            Subtotal {subtotal}
           </div>
         )}
         {data?.length !== 0 && (
@@ -109,7 +158,7 @@ const Cart: NextPage = () => {
           </div>
         )}
         {data?.length !== 0 && (
-          <div className="mx-auto w-[90%]">
+          <div className="mx-auto my-6 w-[90%]">
             <Button fullWidth>Checkout</Button>
           </div>
         )}

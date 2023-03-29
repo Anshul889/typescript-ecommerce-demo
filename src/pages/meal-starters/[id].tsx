@@ -23,7 +23,7 @@ const Product: NextPage = () => {
   const { query } = useRouter();
   const { data: session } = useSession();
   const { data, isLoading, refetch } = api.products.getOne.useQuery(
-    { id: query?.id },
+    { id: query?.id as string },
     {
       enabled: !!query?.id,
     }
