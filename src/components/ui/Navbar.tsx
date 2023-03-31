@@ -3,19 +3,20 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Button } from "./Button";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const navigation = [
-  { name: "Home", href: "/", current: true },
-  { name: "Cart", href: "/cart", current: false },
-  { name: "Shop", href: "/wishlist", current: false },
-  { name: "Calendar", href: "#", current: false },
+  { name: "Home", href: "/" },
+  { name: "Cart", href: "/cart" },
+  { name: "Shop", href: "/wishlist" },
 ];
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-const Navbar = ( ) => {
+const Navbar = () => {
+  const router = useRouter();
   return (
     <Disclosure as="nav" className="bg-primary">
       {({ open }) => (
@@ -49,19 +50,19 @@ const Navbar = ( ) => {
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
-                      <a
+                      <Link
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current
+                          item.href == router.pathname
                             ? "bg-secondary text-white"
                             : "text-gray-300 hover:bg-gray-700 hover:text-white",
                           "rounded-md px-3 py-2 text-sm font-medium"
                         )}
-                        aria-current={item.current ? "page" : undefined}
+                        aria-current={item.href === router.pathname ? "page" : undefined}
                       >
                         {item.name}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -151,12 +152,12 @@ const Navbar = ( ) => {
                   as={Link}
                   href={item.href}
                   className={classNames(
-                    item.current
+                    item.href === router.pathname
                       ? "bg-secondary text-white"
                       : "text-gray-300 hover:bg-lightred hover:text-white",
                     "block rounded-md px-3 py-2 text-base font-medium"
                   )}
-                  aria-current={item.current ? "page" : undefined}
+                  aria-current={item.href === router.pathname ? "page" : undefined}
                 >
                   {item.name}
                 </Disclosure.Button>
@@ -167,6 +168,6 @@ const Navbar = ( ) => {
       )}
     </Disclosure>
   );
-}
+};
 
-export default Navbar
+export default Navbar;
