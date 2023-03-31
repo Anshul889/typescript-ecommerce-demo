@@ -79,6 +79,43 @@ const Cart: NextPage = () => {
     },
   });
 
+  const { mutate: decrementQuantity } = api.cart.decreaseQuantity.useMutation({
+    onMutate: async ({ userId, productId, quantity }) => {
+      await utils.cart.getUserCart.cancel();
+      const response = utils.cart.getUserCart.getData({ userId });
+      if (!response) {
+        return;
+      } else {
+        const itemIdx = response.findIndex(
+          (item) => item.productId === productId
+        );
+        const item = response[itemIdx];
+        const product = {
+          name: item?.product.name as string,
+          price: item?.product.price as number,
+          imageURL: item?.product.imageURL as string,
+          id: item?.productId as string,
+        };
+        response[itemIdx] = {
+          product,
+          quantity: quantity - 1,
+          userId: userId,
+          productId: productId,
+        };
+        utils.cart.getUserCart.setData({ userId }, (prevEntries) => {
+          if (prevEntries) {
+            return [...response];
+          } else {
+            return prevEntries;
+          }
+        });
+      }
+    },
+    onSettled: async () => {
+      await utils.cart.getUserCart.invalidate();
+    },
+  });
+
   const handleRemoveFromCart = (id: string) => {
     removeFromCart({ userId: session?.user?.id as string, productId: id });
   };
@@ -87,7 +124,15 @@ const Cart: NextPage = () => {
     incrementQuantity({
       userId: session?.user?.id as string,
       productId: id,
-      quantity: quantity,
+      quantity,
+    });
+  };
+
+  const handleDecrement = (id: string, quantity: number) => {
+    decrementQuantity({
+      userId: session?.user?.id as string,
+      productId: id,
+      quantity,
     });
   };
 
@@ -121,7 +166,9 @@ const Cart: NextPage = () => {
                   ${product.quantity * product.product.price}.00
                 </div>
                 <div>
-                  <span>-</span>
+                  <span  onClick={() =>
+                      handleDecrement(product.productId, product.quantity)
+                    }>-</span>
                   <span>{product.quantity}</span>
                   <span
                     onClick={() =>
