@@ -45,29 +45,34 @@ const Cart: NextPage = () => {
   const { mutate: incrementQuantity } = api.cart.increaseQuantity.useMutation({
     onMutate: async ({ userId, productId, quantity }) => {
       await utils.cart.getUserCart.cancel();
-      const response = utils.products.getOne.getData({ id: productId });
-      const product = {
-        name: response?.name as string,
-        price: response?.price as number,
-        imageURL: response?.imageURL as string,
-        id: response?.id as string,
+      const response = utils.cart.getUserCart.getData({ userId });
+      if (!response) {
+        return;
+      } else {
+        const itemIdx = response.findIndex(
+          (item) => item.productId === productId
+        );
+        const item = response[itemIdx];
+        const product = {
+          name: item?.product.name as string,
+          price: item?.product.price as number,
+          imageURL: item?.product.imageURL as string,
+          id: item?.productId as string,
+        };
+        response[itemIdx] = {
+          product,
+          quantity: quantity + 1,
+          userId: userId,
+          productId: productId,
+        };
+        utils.cart.getUserCart.setData({ userId }, (prevEntries) => {
+          if (prevEntries) {
+            return [...response];
+          } else {
+            return prevEntries;
+          }
+        });
       }
-      utils.cart.getUserCart.setData({ userId }, (prevEntries) => { 
-        if (prevEntries) {
-          const removed =  [...prevEntries.filter((product) => product.productId !== productId)]
-          const newArr = [
-            ...removed, {
-              userId,
-              productId,
-              quantity: quantity+ 1,
-              product,
-            }
-          ];
-          return newArr
-        } else {
-          return prevEntries;
-        }
-      });
     },
     onSettled: async () => {
       await utils.cart.getUserCart.invalidate();
