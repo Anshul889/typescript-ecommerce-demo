@@ -157,7 +157,7 @@ const Cart: NextPage = () => {
         <div className="mx-auto w-[90%] border-b-[0.1px] border-neutral-500 border-opacity-50">
           {data?.map((product, index) => {
             return (
-              <div key={index} className="my-6 grid grid-cols-3 gap-x-6">
+              <div key={index} className="my-6 grid grid-cols-[1fr_1.5fr_max-content] gap-x-4">
                 <div className="relative row-span-2 h-[26vw]">
                   <NextImage src={product.product.imageURL} fill alt="" />
                 </div>
@@ -166,9 +166,9 @@ const Cart: NextPage = () => {
                   ${product.quantity * product.product.price}.00
                 </div>
                 <div>
-                  <span  onClick={() =>
+                  {product.quantity> 1 &&<span  onClick={() =>
                       handleDecrement(product.productId, product.quantity)
-                    }>-</span>
+                    }>-</span>}
                   <span>{product.quantity}</span>
                   <span
                     onClick={() =>
@@ -201,7 +201,7 @@ const Cart: NextPage = () => {
         )}
         {data?.length !== 0 && (
           <div className="text-center text-xl font-bold">
-            Subtotal {subtotal}
+            Subtotal ${subtotal}.00
           </div>
         )}
         {data?.length !== 0 && (

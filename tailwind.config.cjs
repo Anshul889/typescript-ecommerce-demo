@@ -7,7 +7,8 @@ const config = {
       colors: {
         'primary': '#f2efdd',
         'secondary': '#910f3f',
-        'darkred': 'rgb(61, 8, 27)'
+        'darkred': 'rgb(61, 8, 27)',
+        'lightred': 'hsl(337.8, 81.3%, 41.4%)'
       },
       fontFamily: {
         mariposa: ['Mariposa', 'sans'],
