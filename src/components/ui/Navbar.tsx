@@ -7,11 +7,11 @@ import Link from "next/link";
 const navigation = [
   { name: "Home", href: "/", current: true },
   { name: "Cart", href: "/cart", current: false },
-  { name: "Shop", href: "/meal-starters", current: false },
+  { name: "Shop", href: "/wishlist", current: false },
   { name: "Calendar", href: "#", current: false },
 ];
 
-function classNames(...classes) {
+function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
