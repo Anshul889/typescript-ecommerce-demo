@@ -54,7 +54,7 @@ const Navbar = () => {
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.href == router.pathname
+                          item.href === router.pathname
                             ? "bg-secondary text-white"
                             : "text-gray-300 hover:bg-gray-700 hover:text-white",
                           "rounded-md px-3 py-2 text-sm font-medium"
@@ -100,7 +100,7 @@ const Navbar = () => {
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-primary py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <Menu.Item>
                         {({ active }) => (
-                          <a
+                          <Link
                             href="#"
                             className={classNames(
                               active ? "bg-gray-100" : "",
@@ -108,7 +108,7 @@ const Navbar = () => {
                             )}
                           >
                             Your Profile
-                          </a>
+                          </Link>
                         )}
                       </Menu.Item>
                       <Menu.Item>
@@ -144,7 +144,7 @@ const Navbar = () => {
             </div>
           </div>
 
-          <Disclosure.Panel className="sm:hidden">
+          <Disclosure.Panel className="sm:hidden absolute z-10 w-full">
             <div className="space-y-1 px-2 pb-3 pt-2">
               {navigation.map((item) => (
                 <Disclosure.Button
@@ -154,7 +154,7 @@ const Navbar = () => {
                   className={classNames(
                     item.href === router.pathname
                       ? "bg-secondary text-white"
-                      : "text-gray-300 hover:bg-lightred hover:text-white",
+                      : "text-gray-800 hover:bg-lightred hover:text-white",
                     "block rounded-md px-3 py-2 text-base font-medium"
                   )}
                   aria-current={item.href === router.pathname ? "page" : undefined}
