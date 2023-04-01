@@ -4,6 +4,9 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Button } from "./Button";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import carticon from "../../../public/cart-shopping-light.svg";
+import logo from "../../../public/Crave.webp";
+import NextImage from "next/image";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -36,11 +39,9 @@ const Navbar = () => {
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <img
-                    className="block h-8 w-auto lg:hidden"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                    alt="Your Company"
-                  />
+                  <div className="relative h-8 w-16">
+                    <NextImage src={logo}  fill alt=""/>
+                  </div>
                   <img
                     className="hidden h-8 w-auto lg:block"
                     src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
@@ -59,7 +60,9 @@ const Navbar = () => {
                             : "text-gray-300 hover:bg-gray-700 hover:text-white",
                           "rounded-md px-3 py-2 text-sm font-medium"
                         )}
-                        aria-current={item.href === router.pathname ? "page" : undefined}
+                        aria-current={
+                          item.href === router.pathname ? "page" : undefined
+                        }
                       >
                         {item.name}
                       </Link>
@@ -68,13 +71,9 @@ const Navbar = () => {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <button
-                  type="button"
-                  className="rounded-full bg-secondary p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                >
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
+                <Link href="/cart" className="relative h-8 w-8">
+                  <NextImage src={carticon as string} fill alt="" />
+                </Link>
 
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
@@ -144,7 +143,7 @@ const Navbar = () => {
             </div>
           </div>
 
-          <Disclosure.Panel className="sm:hidden absolute z-10 w-full">
+          <Disclosure.Panel className="absolute z-10 w-full sm:hidden">
             <div className="space-y-1 px-2 pb-3 pt-2">
               {navigation.map((item) => (
                 <Disclosure.Button
@@ -157,7 +156,9 @@ const Navbar = () => {
                       : "text-gray-800 hover:bg-lightred hover:text-white",
                     "block rounded-md px-3 py-2 text-base font-medium"
                   )}
-                  aria-current={item.href === router.pathname ? "page" : undefined}
+                  aria-current={
+                    item.href === router.pathname ? "page" : undefined
+                  }
                 >
                   {item.name}
                 </Disclosure.Button>
