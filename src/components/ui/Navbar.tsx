@@ -12,8 +12,8 @@ import { useSession, signIn, signOut } from "next-auth/react";
 
 const navigation = [
   { name: "Home", href: "/" },
-  { name: "Cart", href: "/cart" },
-  { name: "Shop", href: "/wishlist" },
+  { name: "Wislist", href: "/wishlist" },
+  { name: "Shop", href: "/meal-starters" },
 ];
 
 function classNames(...classes: string[]) {
