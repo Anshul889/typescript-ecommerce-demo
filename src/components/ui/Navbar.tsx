@@ -6,7 +6,9 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import carticon from "../../../public/cart-shopping-light.svg";
 import logo from "../../../public/Crave.webp";
+import usericon from "../../../public/user.svg";
 import NextImage from "next/image";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -20,6 +22,7 @@ function classNames(...classes: string[]) {
 
 const Navbar = () => {
   const router = useRouter();
+  const { data: session } = useSession();
   return (
     <Disclosure as="nav" className="bg-primary">
       {({ open }) => (
@@ -40,7 +43,7 @@ const Navbar = () => {
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
                   <div className="relative h-8 w-16">
-                    <NextImage src={logo}  fill alt=""/>
+                    <NextImage src={logo} fill alt="" />
                   </div>
                   <img
                     className="hidden h-8 w-auto lg:block"
@@ -78,13 +81,27 @@ const Navbar = () => {
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   <div>
-                    <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                    <Menu.Button className="flex rounded-full bg-primary text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-primary">
                       <span className="sr-only">Open user menu</span>
-                      <img
-                        className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt=""
-                      />
+                      {session ? (
+                            
+                      <div className="relative h-8 w-8 overflow-hidden rounded-full">
+                        <NextImage
+                          src={
+                            (session.user.image as string) 
+                          }
+                          fill
+                          alt=""
+                        />
+                      </div>) : (<div className="relative h-8 w-8">
+                        <NextImage
+                          src={
+                            usericon as string 
+                          }
+                          fill
+                          alt=""
+                        />
+                      </div>) }
                     </Menu.Button>
                   </div>
                   <Transition
@@ -125,15 +142,19 @@ const Navbar = () => {
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href="#"
+                          <div
+                            onClick={
+                              session
+                                ? () => void signOut()
+                                : () => void signIn()
+                            }
                             className={classNames(
                               active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
+                              "block px-4 py-2 text-sm text-gray-700 cursor-pointer"
                             )}
                           >
-                            Sign out
-                          </a>
+                            {session ? "Sign out" : "Sign in"}
+                          </div>
                         )}
                       </Menu.Item>
                     </Menu.Items>

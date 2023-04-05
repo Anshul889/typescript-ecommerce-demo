@@ -31,7 +31,7 @@ const Modal = ({
   return (
     <>
       <div className="">
-        <Button onClick={openModal}>{buttonText}</Button>
+        <Button fullWidth onClick={openModal}>{buttonText}</Button>
       </div>
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
@@ -73,7 +73,7 @@ const Modal = ({
 
                   <div className="mt-4">
                     {buttonLink ? (
-                      <Button onClick={() => void signIn()}>{buttonAction}</Button>
+                      <Button  onClick={() => void signIn()}>{buttonAction}</Button>
                     ) : (
                       <Button onClick={() => void signOut()}>Logout</Button>
                     )}
