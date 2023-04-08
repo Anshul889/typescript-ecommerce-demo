@@ -4,6 +4,7 @@ import { Button } from "~/components/ui/Button";
 import { useSession } from "next-auth/react";
 import Modal from "~/components/ui/Modal";
 import Listboxselect from "~/components/ui/Listboxselect";
+import StarRating from "~/components/ui/StarRating";
 
 const itemQuantity = [1, 2, 3, 4, 5];
 
@@ -11,6 +12,7 @@ const Play = () => {
   const [counter, setCounter] = useState(0);
   const [selectedNumber, setSelectedNumber] = useState(1);
   const {data} = useSession()
+  const [rating, setRating] = useState<number>(0)
 
   return (
     <>

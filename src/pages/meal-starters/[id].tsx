@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { type NextPage } from "next";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import { api } from "~/utils/api";
-import NextImage from "next/image"; 
+import NextImage from "next/image";
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
 import { Button } from "~/components/ui/Button";
 import Modal from "~/components/ui/Modal";
 import Listboxselect from "~/components/ui/Listboxselect";
+import ReviewForm from "~/components/ReviewForm/ReviewForm";
 
 const itemQuantity = [1, 2, 3, 4, 5];
 
@@ -175,6 +176,7 @@ const Product: NextPage = () => {
       productId: query?.id as string,
     });
   };
+
   if (isLoading) {
     return (
       <div className="grid h-[90vh] grid-cols-1 place-content-center">
@@ -299,6 +301,51 @@ const Product: NextPage = () => {
                   </>
                 )}
               </Disclosure>
+            </div>
+          </div>
+          <h2 className="mx-auto w-[90%] text-2xl font-bold">Reviews</h2>
+          <div>
+            {typeof data?.reviews.length === "number" &&
+              data?.reviews.length > 0 &&
+              data.reviews.map((review, index) => (
+                <div
+                  key={index}
+                  className="mx-auto my-6 grid w-[90%] grid-cols-[30px_1fr_30px]"
+                >
+                  <div className="overflow-hidden rounded-full">
+                    <NextImage
+                      src={review.image}
+                      alt=""
+                      width={30}
+                      height={30}
+                    />
+                  </div>
+                  <div>{review.review}</div>
+                  <div className="text-secondary">delete</div>
+                </div>
+              ))}
+          </div>
+          <div className="my-6">
+            <h2 className="mx-auto w-[90%] text-2xl font-bold">
+              Submit a Review
+            </h2>
+            <div className="mx-auto w-[90%]">
+              {session ? (
+                <ReviewForm
+                  userId={session.user.id}
+                  productId={query.id as string}
+                  addReview={addReview}
+                  name={session.user.name as string}
+                  image={session.user.image as string}
+                />
+              ) : (
+                <div
+                  className="cursor-pointer text-secondary underline"
+                  onClick={() => void signIn()}
+                >
+                  Sign in to continue
+                </div>
+              )}
             </div>
           </div>
         </div>
