@@ -306,7 +306,7 @@ const Product: NextPage = () => {
           <h2 className="mx-auto w-[90%] text-2xl font-bold">Reviews</h2>
           <div>
             {typeof data?.reviews.length === "number" &&
-              data?.reviews.length > 0 &&
+            data?.reviews.length > 0 ? (
               data.reviews.map((review, index) => (
                 <div
                   key={index}
@@ -323,7 +323,10 @@ const Product: NextPage = () => {
                   <div>{review.review}</div>
                   <div className="text-secondary">delete</div>
                 </div>
-              ))}
+              ))
+            ) : (
+              <div className="w-[90%] mx-auto opacity-75">No reviews yet</div>
+            )}
           </div>
           <div className="my-6">
             <h2 className="mx-auto w-[90%] text-2xl font-bold">
