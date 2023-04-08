@@ -68,11 +68,11 @@ const Product: NextPage = () => {
   const { data: isAuthor, refetch: refetchAuthor } =
     api.reviews.getReview.useQuery(
       {
-        userId: session?.user?.id || "",
+        userId: session?.user?.id as string,
         productId: query?.id as string,
       },
       {
-        enabled: !!query.id,
+        enabled: !!session?.user?.id,
         onSuccess: (isAuthor) => {
           console.log("author:", isAuthor.result);
         },
@@ -321,11 +321,22 @@ const Product: NextPage = () => {
                     />
                   </div>
                   <div>{review.review}</div>
-                  <div className="text-secondary">delete</div>
+                  {isAuthor?.result === 'epic' &&
+                  (<div
+                    className="text-secondary cursor-pointer underline"
+                    onClick={() =>
+                      deleteReview({
+                        userId: session?.user.id as string,
+                        productId: query.id as string,
+                      })
+                    }
+                  >
+                    delete
+                  </div>)}
                 </div>
               ))
             ) : (
-              <div className="w-[90%] mx-auto opacity-75">No reviews yet</div>
+              <div className="mx-auto w-[90%] opacity-75">No reviews yet</div>
             )}
           </div>
           <div className="my-6">
