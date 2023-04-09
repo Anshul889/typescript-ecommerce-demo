@@ -10,6 +10,7 @@ import { Button } from "~/components/ui/Button";
 import Modal from "~/components/ui/Modal";
 import Listboxselect from "~/components/ui/Listboxselect";
 import ReviewForm from "~/components/ReviewForm/ReviewForm";
+import moment from "moment";
 
 const itemQuantity = [1, 2, 3, 4, 5];
 
@@ -310,17 +311,21 @@ const Product: NextPage = () => {
               data.reviews.map((review, index) => (
                 <div
                   key={index}
-                  className="mx-auto my-6 grid w-[90%] grid-cols-[30px_1fr_30px]"
+                  className="mx-auto my-6 grid w-[90%] grid-cols-[32px_1fr_30px] gap-4"
                 >
-                  <div className="overflow-hidden rounded-full">
+                  <div className="overflow-hidden rounded-full h-8">
                     <NextImage
                       src={review.image}
                       alt=""
-                      width={30}
-                      height={30}
+                      width={32}
+                      height={32}
                     />
                   </div>
+                  <div>
+                  <div className="opacity-75">{review.name}, {moment(review.createdAt).fromNow()}</div>
+                  <div>{review.rating} stars</div>
                   <div>{review.review}</div>
+                  </div>
                   {isAuthor?.result === 'epic' &&
                   (<div
                     className="text-secondary cursor-pointer underline"
