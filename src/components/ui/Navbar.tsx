@@ -85,7 +85,7 @@ const Navbar = () => {
                   </div>
                   {session && (cart?.length as number) > 0 && (
                     <div className="col-span-1  col-start-1 row-span-1 row-start-1 bg-transparent z-10 text-right text-xs text-secondary">
-                      <div className="absolute bg-secondary w-4 text-center rounded-full left-4 top-4 text-white">{cart?.length}</div>
+                      <div className="relative bg-secondary w-4 text-center rounded-full left-4 bottom-1 text-white sm:left-5">{cart?.length}</div>
                     </div>
                   )}
                 </Link>
