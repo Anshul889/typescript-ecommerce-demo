@@ -9,6 +9,7 @@ import logo from "../../../public/Crave.webp";
 import usericon from "../../../public/user.svg";
 import NextImage from "next/image";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { api } from "~/utils/api";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -23,6 +24,12 @@ function classNames(...classes: string[]) {
 const Navbar = () => {
   const router = useRouter();
   const { data: session } = useSession();
+  const { data: cart } = api.cart.getUserCart.useQuery(
+    { userId: session?.user?.id as string },
+    {
+      enabled: !!session?.user?.id,
+    }
+  );
   return (
     <Disclosure as="nav" className="bg-primary">
       {({ open }) => (
@@ -45,11 +52,6 @@ const Navbar = () => {
                   <div className="relative h-8 w-16">
                     <NextImage src={logo} fill alt="" />
                   </div>
-                  <img
-                    className="hidden h-8 w-auto lg:block"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                    alt="Your Company"
-                  />
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
@@ -74,8 +76,18 @@ const Navbar = () => {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <Link href="/cart" className="relative h-8 w-8">
-                  <NextImage src={carticon as string} fill alt="" />
+                <Link href="/cart" className="grid">
+                  <div
+                    
+                    className="relative col-span-1 col-start-1  row-span-1 row-start-1 h-7 w-7 sm:h-8 sm:w-8"
+                  >
+                    <NextImage src={carticon as string} fill alt="" />
+                  </div>
+                  {session && (cart?.length as number) > 0 && (
+                    <div className="col-span-1  col-start-1 row-span-1 row-start-1 bg-transparent z-10 text-right text-xs text-secondary">
+                      <div className="absolute bg-secondary w-4 text-center rounded-full left-4 top-4 text-white">{cart?.length}</div>
+                    </div>
+                  )}
                 </Link>
 
                 {/* Profile dropdown */}
@@ -84,24 +96,18 @@ const Navbar = () => {
                     <Menu.Button className="flex rounded-full bg-primary text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-primary">
                       <span className="sr-only">Open user menu</span>
                       {session ? (
-                            
-                      <div className="relative h-8 w-8 overflow-hidden rounded-full">
-                        <NextImage
-                          src={
-                            (session.user.image as string) 
-                          }
-                          fill
-                          alt=""
-                        />
-                      </div>) : (<div className="relative h-8 w-8">
-                        <NextImage
-                          src={
-                            usericon as string 
-                          }
-                          fill
-                          alt=""
-                        />
-                      </div>) }
+                        <div className="relative h-7 w-7 overflow-hidden rounded-full sm:h-8 sm:w-8">
+                          <NextImage
+                            src={session.user.image as string}
+                            fill
+                            alt=""
+                          />
+                        </div>
+                      ) : (
+                        <div className="relative h-7 w-7 sm:h-8 sm:w-8">
+                          <NextImage src={usericon as string} fill alt="" />
+                        </div>
+                      )}
                     </Menu.Button>
                   </div>
                   <Transition
@@ -150,7 +156,7 @@ const Navbar = () => {
                             }
                             className={classNames(
                               active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700 cursor-pointer"
+                              "block cursor-pointer px-4 py-2 text-sm text-gray-700"
                             )}
                           >
                             {session ? "Sign out" : "Sign in"}

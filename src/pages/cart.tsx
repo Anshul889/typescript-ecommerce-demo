@@ -136,12 +136,18 @@ const Cart: NextPage = () => {
     });
   };
 
-  if (isLoading) {
+  if (isLoading && session) {
     return (
       <div className="grid h-[90vh] grid-cols-1">
         <h1 className="place-self-center">Loading...</h1>
       </div>
     );
+  } else if (!session) {
+    return (
+      <div className="grid h-[90vh] grid-cols-1 w-[90%] mx-auto">
+        <h1 className="place-self-center">Please login to view your cart</h1> 
+      </div>
+    )
   } else {
     return (
       <div>
@@ -158,7 +164,7 @@ const Cart: NextPage = () => {
           {data?.map((product, index) => {
             return (
               <div key={index} className="my-6 grid grid-cols-[1fr_1.5fr_max-content] gap-x-4">
-                <div className="relative row-span-2 h-[26vw]">
+                <div className="relative row-span-2 h-[27vw]">
                   <NextImage src={product.product.imageURL} fill alt="" />
                 </div>
                 <div>{product.product.name}</div>

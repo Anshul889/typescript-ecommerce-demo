@@ -11,6 +11,7 @@ import Modal from "~/components/ui/Modal";
 import Listboxselect from "~/components/ui/Listboxselect";
 import ReviewForm from "~/components/ReviewForm/ReviewForm";
 import moment from "moment";
+import Rating from "~/components/ui/Rating";
 
 const itemQuantity = [1, 2, 3, 4, 5];
 
@@ -323,7 +324,9 @@ const Product: NextPage = () => {
                   </div>
                   <div>
                   <div className="opacity-75">{review.name}, {moment(review.createdAt).fromNow()}</div>
-                  <div>{review.rating} stars</div>
+                  <div>
+                    <Rating rating={review.rating}/>
+                  </div>
                   <div>{review.review}</div>
                   </div>
                   {isAuthor?.result === 'epic' &&
