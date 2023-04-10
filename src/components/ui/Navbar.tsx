@@ -54,7 +54,7 @@ const Navbar = () => {
                   </div>
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
-                  <div className="flex space-x-4">
+                  <div className="grid grid-cols-[repeat(3,80px)]">
                     {navigation.map((item) => (
                       <Link
                         key={item.name}

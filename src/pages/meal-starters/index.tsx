@@ -15,11 +15,11 @@ const Index = () => {
           and seasonings you need. Just bring your own protein + veg to the
           party!
         </p>
-        <div className="my-6 grid grid-cols-1">
+        <div className="my-6 grid grid-cols-1 md:grid-cols-3 md:gap-10">
           {data?.map((product, index) => {
             return (
               <Link href={`/meal-starters/${product.id}`} className="my-4" key={index}>
-                <div className="relative grid h-[90vw] grid-cols-1">
+                <div className="relative grid h-[90vw] grid-cols-1 md:h-[27vw]">
                   <NextImage
                     src={product.imageURL}
                     className="rounded-2xl"
