@@ -12,6 +12,7 @@ import Listboxselect from "~/components/ui/Listboxselect";
 import ReviewForm from "~/components/ReviewForm/ReviewForm";
 import moment from "moment";
 import Rating from "~/components/ui/Rating";
+import DesktopCarousel from "~/components/Carousel/Carousel";
 
 const itemQuantity = [1, 2, 3, 4, 5];
 
@@ -187,122 +188,144 @@ const Product: NextPage = () => {
     );
   } else {
     return (
-      <div className="mt-6">
+      <div className="mx-auto mt-6 max-w-6xl">
         <div>
-          <div className="scrollbar-hide grid grid-cols-[2px_repeat(4,80%)_2px] gap-6 overflow-scroll">
-            <div></div>
-            <div className="relative h-[80vw] w-full">
-              <NextImage src={data?.imageURL || ""} alt="" fill />
-            </div>
-            <div className="relative h-[80vw] w-full">
-              <NextImage src={data?.imageURL2 || ""} alt="" fill />
-            </div>
-            <div className="relative h-[80vw] w-full">
-              <NextImage src={data?.imageURL3 || ""} alt="" fill />
-            </div>
-            <div className="relative h-[80vw] w-full">
-              <NextImage src={data?.imageURL4 || ""} alt="" fill />
-            </div>
-            <div></div>
-          </div>
-          <div className="mx-auto my-6 w-[90%]">
-            <div>
-              <h1>{data?.name}</h1>
-              <div className="my-4 grid grid-cols-[0.3fr_1fr] gap-6">
-                <Listboxselect
-                  items={itemQuantity}
-                  selectedItem={selectedNumber}
-                  setSelectedItem={setSelectedNumber}
-                />
-                <div className="my-4 font-archivo ">${data?.price}.00</div>
+          <div className="md:grid md:grid-cols-2 md:gap-x-20">
+            <div className="scrollbar-hide grid grid-cols-[2px_repeat(4,80%)_2px] gap-6 overflow-scroll md:hidden">
+              <div></div>
+              <div className="relative h-[80vw] w-full">
+                <NextImage src={data?.imageURL as string} alt="" fill />
               </div>
+              <div className="relative h-[80vw] w-full">
+                <NextImage src={data?.imageURL2 as string} alt="" fill />
+              </div>
+              <div className="relative h-[80vw] w-full">
+                <NextImage src={data?.imageURL3 as string} alt="" fill />
+              </div>
+              <div className="relative h-[80vw] w-full">
+                <NextImage src={data?.imageURL4 as string} alt="" fill />
+              </div>
+              <div></div>
+            </div>
+            <div className="hidden md:block">
+              <DesktopCarousel
+                imageURL={data?.imageURL as string}
+                imageURL2={data?.imageURL2 as string}
+                imageURL3={data?.imageURL3 as string}
+                imageURL4={data?.imageURL4 as string}
+              />
+            </div>
+            <div className="mx-auto my-6 w-[90%]">
               <div>
-                {session && userLike && (
-                  <Button fullWidth onClick={handleRemoveLike}>
-                    Remove From Wishlist
-                  </Button>
-                )}
-                {session && !userLike && (
-                  <Button fullWidth onClick={handleAddLike}>
-                    Add to Wishlist
-                  </Button>
-                )}
-                {!session && (
-                  <Modal
-                    buttonText="Add To Wishlist"
-                    title="Login To continue"
-                    buttonAction="Login"
-                    buttonLink="/auth/signin"
+                <h1>{data?.name}</h1>
+                <div className="my-4 grid grid-cols-[0.3fr_1fr] gap-6">
+                  <Listboxselect
+                    items={itemQuantity}
+                    selectedItem={selectedNumber}
+                    setSelectedItem={setSelectedNumber}
                   />
-                )}
+                  <div className="my-4 font-archivo ">${data?.price}.00</div>
+                </div>
+                <div>
+                  {session && userLike && (
+                    <div className='md:w-44'>
+                    <Button fullWidth onClick={handleRemoveLike}>
+                      Remove From Wishlist
+                    </Button>
+                    </div>
+                  )}
+                  {session && !userLike && (
+                    <div className='md:w-44'>
+                    <Button fullWidth onClick={handleAddLike}>
+                      Add to Wishlist
+                    </Button>
+                    </div>
+                  )}
+                  {!session && (
+                    <div className='md:w-44'>
+                    <Modal
+                      buttonText="Add To Wishlist"
+                      title="Login To continue"
+                      buttonAction="Login"
+                      buttonLink="/auth/signin"
+                    />
+                    </div>
+                  )}
+                </div>
+                <div className="my-6">
+                  {session && isCart && (
+                    <div className='md:w-44'>
+                    <Button fullWidth onClick={handleRemoveFromCart}>
+                      Remove From Cart
+                    </Button>
+                    </div>
+                  )}
+                  {session && !isCart && (
+                    <div className='md:w-44'>
+                    <Button fullWidth onClick={handleAddToCart}>
+                      Add to Cart
+                    </Button>
+                    </div>
+                  )}
+                  {!session && (
+                    <div className='md:w-44'>
+                    <Modal
+                      buttonText="Add To Cart"
+                      title="Login To continue"
+                      buttonAction="Login"
+                      buttonLink="/auth/signin"
+                    />
+                    </div>
+                  )}
+                </div>
+                <div className="my-4 font-archivo ">{data?.description1}</div>
+                <div className="my-4 font-archivo ">{data?.description2}</div>
               </div>
               <div className="my-6">
-                {session && isCart && (
-                  <Button fullWidth onClick={handleRemoveFromCart}>
-                    Remove From Cart
-                  </Button>
-                )}
-                {session && !isCart && (
-                  <Button fullWidth onClick={handleAddToCart}>
-                    Add to Cart
-                  </Button>
-                )}
-                {!session && (
-                  <Modal
-                    buttonText="Add To Cart"
-                    title="Login To continue"
-                    buttonAction="Login"
-                    buttonLink="/auth/signin"
-                  />
-                )}
+                <Disclosure>
+                  {({ open }) => (
+                    <>
+                      <Disclosure.Button className="my-2 grid w-full grid-cols-[6fr_20px] border-t-[0.1px] border-solid border-neutral-500 border-opacity-50 py-2">
+                        <div className="align-self-start text-start font-archivo text-xl font-bold">
+                          Ingredients
+                        </div>
+                        <ChevronUpIcon
+                          className={`${
+                            open ? "rotate-180 transform" : ""
+                          } mt-1 h-5 w-5 `}
+                        />
+                      </Disclosure.Button>
+                      <Disclosure.Panel className="mb-4 font-archivo">
+                        {data?.ingredients}
+                      </Disclosure.Panel>
+                    </>
+                  )}
+                </Disclosure>
+                <Disclosure>
+                  {({ open }) => (
+                    <>
+                      <Disclosure.Button className="my-2 grid w-full grid-cols-[6fr_20px] border-t-[0.1px] border-solid border-neutral-500 border-opacity-50 py-2">
+                        <div className="align-self-start text-start font-archivo text-xl font-bold">
+                          Nutrition Info
+                        </div>
+                        <ChevronUpIcon
+                          className={`${
+                            open ? "rotate-180 transform" : ""
+                          } mt-1 h-5 w-5 `}
+                        />
+                      </Disclosure.Button>
+                      <Disclosure.Panel className="mb-4 font-archivo">
+                        <div className="font-archivo">
+                          Servings: {data?.servings}
+                        </div>
+                        <div className="font-archivo">
+                          ServingSize: {data?.servingsSize}
+                        </div>
+                      </Disclosure.Panel>
+                    </>
+                  )}
+                </Disclosure>
               </div>
-              <div className="my-4 font-archivo ">{data?.description1}</div>
-              <div className="my-4 font-archivo ">{data?.description2}</div>
-            </div>
-            <div className="my-6">
-              <Disclosure>
-                {({ open }) => (
-                  <>
-                    <Disclosure.Button className="my-2 grid w-full grid-cols-[6fr_20px] border-t-[0.1px] border-solid border-neutral-500 border-opacity-50 py-2">
-                      <div className="align-self-start text-start font-archivo text-xl font-bold">
-                        Ingredients
-                      </div>
-                      <ChevronUpIcon
-                        className={`${
-                          open ? "rotate-180 transform" : ""
-                        } mt-1 h-5 w-5 `}
-                      />
-                    </Disclosure.Button>
-                    <Disclosure.Panel className="mb-4 font-archivo">
-                      {data?.ingredients}
-                    </Disclosure.Panel>
-                  </>
-                )}
-              </Disclosure>
-              <Disclosure>
-                {({ open }) => (
-                  <>
-                    <Disclosure.Button className="my-2 grid w-full grid-cols-[6fr_20px] border-t-[0.1px] border-solid border-neutral-500 border-opacity-50 py-2">
-                      <div className="align-self-start text-start font-archivo text-xl font-bold">
-                        Nutrition Info
-                      </div>
-                      <ChevronUpIcon
-                        className={`${
-                          open ? "rotate-180 transform" : ""
-                        } mt-1 h-5 w-5 `}
-                      />
-                    </Disclosure.Button>
-                    <Disclosure.Panel className="mb-4 font-archivo">
-                      <div className="font-archivo">
-                        Servings: {data?.servings}
-                      </div>
-                      <div className="font-archivo">
-                        ServingSize: {data?.servingsSize}
-                      </div>
-                    </Disclosure.Panel>
-                  </>
-                )}
-              </Disclosure>
             </div>
           </div>
           <h2 className="mx-auto w-[90%] text-2xl font-bold">Reviews</h2>
@@ -314,7 +337,7 @@ const Product: NextPage = () => {
                   key={index}
                   className="mx-auto my-6 grid w-[90%] grid-cols-[32px_1fr_30px] gap-4"
                 >
-                  <div className="overflow-hidden rounded-full h-8">
+                  <div className="h-8 overflow-hidden rounded-full">
                     <NextImage
                       src={review.image}
                       alt=""
@@ -323,24 +346,27 @@ const Product: NextPage = () => {
                     />
                   </div>
                   <div>
-                  <div className="opacity-75">{review.name}, {moment(review.createdAt).fromNow()}</div>
-                  <div>
-                    <Rating rating={review.rating}/>
+                    <div className="opacity-75">
+                      {review.name}, {moment(review.createdAt).fromNow()}
+                    </div>
+                    <div>
+                      <Rating rating={review.rating} />
+                    </div>
+                    <div>{review.review}</div>
                   </div>
-                  <div>{review.review}</div>
-                  </div>
-                  {isAuthor?.result === 'epic' &&
-                  (<div
-                    className="text-secondary cursor-pointer underline"
-                    onClick={() =>
-                      deleteReview({
-                        userId: session?.user.id as string,
-                        productId: query.id as string,
-                      })
-                    }
-                  >
-                    delete
-                  </div>)}
+                  {isAuthor?.result === "epic" && (
+                    <div
+                      className="cursor-pointer text-secondary underline"
+                      onClick={() =>
+                        deleteReview({
+                          userId: session?.user.id as string,
+                          productId: query.id as string,
+                        })
+                      }
+                    >
+                      delete
+                    </div>
+                  )}
                 </div>
               ))
             ) : (
