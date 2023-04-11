@@ -144,17 +144,20 @@ const Cart: NextPage = () => {
     );
   } else if (!session) {
     return (
-      <div className="grid h-[90vh] grid-cols-1 w-[90%] mx-auto">
-        <h1 className="place-self-center">Please login to view your cart</h1> 
+      <div className="mx-auto grid h-[90vh] w-[90%] grid-cols-1">
+        <h1 className="place-self-center">Please login to view your cart</h1>
       </div>
-    )
+    );
   } else {
     return (
-      <div>
+      <div className="md: max-w-6xl md:mx-auto">
         <h1 className="mx-auto my-6 w-[90%]">Your Cart</h1>
-        <div className="mx-auto grid w-[90%] grid-cols-2 border-b-[0.1px] border-neutral-500 border-opacity-50 pb-4">
+        <div className="mx-auto grid w-[90%] grid-cols-2 border-b-[0.1px] border-neutral-500 border-opacity-50 pb-4 md:grid-cols-3">
           <div className="font-archivo text-[10px] font-light uppercase tracking-[0.13rem]">
             Product
+          </div>
+          <div className="hidden font-archivo text-[10px] font-light uppercase tracking-[0.13rem] md:block  md:text-right">
+            Quantity
           </div>
           <div className="text-right font-archivo text-[10px] font-light uppercase tracking-[0.13rem]">
             Total
@@ -163,20 +166,31 @@ const Cart: NextPage = () => {
         <div className="mx-auto w-[90%] border-b-[0.1px] border-neutral-500 border-opacity-50">
           {data?.map((product, index) => {
             return (
-              <div key={index} className="my-6 grid grid-cols-[1fr_1.5fr_max-content] gap-x-4">
-                <div className="relative row-span-2 h-[27vw]">
+              <div
+                key={index}
+                className="md:grid-row-[] my-6 grid grid-cols-[1fr_1.5fr_max-content] gap-x-4 md:grid-cols-[0.3fr_0.9fr_0.3fr_0.3fr_0.3fr]"
+              >
+                <div className="relative row-span-2 aspect-square">
                   <NextImage src={product.product.imageURL} fill alt="" />
                 </div>
                 <div>{product.product.name}</div>
-                <div className="text-right">
+                <div className="text-right md:col-start-5">
                   ${product.quantity * product.product.price}.00
                 </div>
-                <div>
-                  {product.quantity> 1 &&<span  onClick={() =>
-                      handleDecrement(product.productId, product.quantity)
-                    }>-</span>}
-                  <span>{product.quantity}</span>
+                <div className="md:col-start-3 md:row-start-1 md:text-center md:text-2xl text-xl">
+                  {product.quantity > 1 && (
+                    <span
+                      className="mx-2 md:mx-3"
+                      onClick={() =>
+                        handleDecrement(product.productId, product.quantity)
+                      }
+                    >
+                      -
+                    </span>
+                  )}
+                  <span className="mx-2 md:mx-3">{product.quantity}</span>
                   <span
+                    className="mx-2 md:mx-3"
                     onClick={() =>
                       handleIncrement(product.productId, product.quantity)
                     }
@@ -186,7 +200,7 @@ const Cart: NextPage = () => {
                 </div>
                 <div
                   onClick={() => handleRemoveFromCart(product.productId)}
-                  className="point text-right text-red-500 underline"
+                  className="point text-right text-red-500 underline md:col-start-4 md:row-start-1 cursor-pointer"
                 >
                   remove
                 </div>
