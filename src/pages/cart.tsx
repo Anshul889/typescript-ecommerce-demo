@@ -177,7 +177,7 @@ const Cart: NextPage = () => {
                 <div className="text-right md:col-start-5">
                   ${product.quantity * product.product.price}.00
                 </div>
-                <div className="md:col-start-3 md:row-start-1 md:text-center md:text-2xl text-xl">
+                <div className="text-xl md:col-start-3 md:row-start-1 md:text-center md:text-2xl">
                   {product.quantity > 1 && (
                     <span
                       className="mx-2 md:mx-3"
@@ -200,7 +200,7 @@ const Cart: NextPage = () => {
                 </div>
                 <div
                   onClick={() => handleRemoveFromCart(product.productId)}
-                  className="point text-right text-red-500 underline md:col-start-4 md:row-start-1 cursor-pointer"
+                  className="point cursor-pointer text-right text-red-500 underline md:col-start-4 md:row-start-1"
                 >
                   remove
                 </div>

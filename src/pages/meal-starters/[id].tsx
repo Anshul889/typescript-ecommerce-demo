@@ -328,14 +328,14 @@ const Product: NextPage = () => {
               </div>
             </div>
           </div>
-          <h2 className="mx-auto w-[90%] text-2xl font-bold">Reviews</h2>
+          <h2 className="mx-auto w-[90%] text-2xl font-bold md:w-full">Reviews</h2>
           <div>
             {typeof data?.reviews.length === "number" &&
             data?.reviews.length > 0 ? (
               data.reviews.map((review, index) => (
                 <div
                   key={index}
-                  className="mx-auto my-6 grid w-[90%] grid-cols-[32px_1fr_30px] gap-4"
+                  className="mx-auto my-6 grid w-[90%] grid-cols-[32px_1fr_30px] gap-4 md:w-full"
                 >
                   <div className="h-8 overflow-hidden rounded-full">
                     <NextImage
@@ -370,14 +370,14 @@ const Product: NextPage = () => {
                 </div>
               ))
             ) : (
-              <div className="mx-auto w-[90%] opacity-75">No reviews yet</div>
+              <div className="mx-auto w-[90%] opacity-75 md:w-full">No reviews yet</div>
             )}
           </div>
-          <div className="my-6">
-            <h2 className="mx-auto w-[90%] text-2xl font-bold">
+          <div className="mt-6 mb-16">
+            <h2 className="mx-auto w-[90%] text-2xl font-bold md:w-full">
               Submit a Review
             </h2>
-            <div className="mx-auto w-[90%]">
+            <div className="mx-auto w-[90%] md:w-full">
               {session ? (
                 <ReviewForm
                   userId={session.user.id}
