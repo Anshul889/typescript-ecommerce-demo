@@ -194,16 +194,16 @@ const Product: NextPage = () => {
             <div className="scrollbar-hide grid grid-cols-[2px_repeat(4,80%)_2px] gap-6 overflow-scroll md:hidden">
               <div></div>
               <div className="relative h-[80vw] w-full">
-                <NextImage src={data?.imageURL as string} alt="" fill />
+                <NextImage placeholder="blur" src={data?.imageURL as string} alt="" fill />
               </div>
               <div className="relative h-[80vw] w-full">
-                <NextImage src={data?.imageURL2 as string} alt="" fill />
+                <NextImage placeholder="blur" src={data?.imageURL2 as string} alt="" fill />
               </div>
               <div className="relative h-[80vw] w-full">
-                <NextImage src={data?.imageURL3 as string} alt="" fill />
+                <NextImage placeholder="blur" src={data?.imageURL3 as string} alt="" fill />
               </div>
               <div className="relative h-[80vw] w-full">
-                <NextImage src={data?.imageURL4 as string} alt="" fill />
+                <NextImage placeholder="blur" src={data?.imageURL4 as string} alt="" fill />
               </div>
               <div></div>
             </div>
