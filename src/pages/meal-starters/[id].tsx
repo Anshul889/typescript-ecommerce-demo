@@ -194,16 +194,16 @@ const Product: NextPage = () => {
             <div className="scrollbar-hide grid grid-cols-[2px_repeat(4,80%)_2px] gap-6 overflow-scroll md:hidden">
               <div></div>
               <div className="relative h-[80vw] w-full">
-                <NextImage placeholder="blur" src={data?.imageURL as string} alt="" fill />
+                <NextImage  src={data?.imageURL as string} alt="" fill />
               </div>
               <div className="relative h-[80vw] w-full">
-                <NextImage placeholder="blur" src={data?.imageURL2 as string} alt="" fill />
+                <NextImage  src={data?.imageURL2 as string} alt="" fill />
               </div>
               <div className="relative h-[80vw] w-full">
-                <NextImage placeholder="blur" src={data?.imageURL3 as string} alt="" fill />
+                <NextImage src={data?.imageURL3 as string} alt="" fill />
               </div>
               <div className="relative h-[80vw] w-full">
-                <NextImage placeholder="blur" src={data?.imageURL4 as string} alt="" fill />
+                <NextImage src={data?.imageURL4 as string} alt="" fill />
               </div>
               <div></div>
             </div>
@@ -218,7 +218,7 @@ const Product: NextPage = () => {
             <div className="mx-auto my-6 w-[90%]">
               <div>
                 <h1>{data?.name}</h1>
-                <div className="my-4 grid grid-cols-[0.3fr_1fr] gap-6">
+                <div className="my-4 grid grid-cols-[0.2fr_1fr] gap-6">
                   <Listboxselect
                     items={itemQuantity}
                     selectedItem={selectedNumber}
