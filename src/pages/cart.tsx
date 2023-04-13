@@ -230,7 +230,7 @@ const Cart: NextPage = () => {
           </div>
         )}
         {data?.length !== 0 && (
-          <div className="mx-auto my-6 w-[90%]">
+          <div className="mx-auto my-6 w-[90%] md:w-44">
             <Button fullWidth>Checkout</Button>
           </div>
         )}

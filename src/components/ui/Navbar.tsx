@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { Disclosure, Menu, Popover, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Button } from "./Button";
 import Link from "next/link";
@@ -31,21 +31,21 @@ const Navbar = () => {
     }
   );
   return (
-    <Disclosure as="nav" className="bg-primary">
+    <Popover as="nav" className="bg-primary">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
-                <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-primary hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-secondary">
+                <Popover.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-primary hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-secondary">
                   <span className="sr-only">Open main menu</span>
                   {open ? (
                     <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
                   ) : (
                     <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
                   )}
-                </Disclosure.Button>
+                </Popover.Button>
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
@@ -77,15 +77,14 @@ const Navbar = () => {
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <Link href="/cart" className="grid">
-                  <div
-                    
-                    className="relative col-span-1 col-start-1  row-span-1 row-start-1 h-7 w-7 sm:h-8 sm:w-8"
-                  >
+                  <div className="relative col-span-1 col-start-1  row-span-1 row-start-1 h-7 w-7 sm:h-8 sm:w-8">
                     <NextImage src={carticon as string} fill alt="" />
                   </div>
                   {session && (cart?.length as number) > 0 && (
-                    <div className="col-span-1  col-start-1 row-span-1 row-start-1 bg-transparent z-10 text-right text-xs text-secondary">
-                      <div className="relative bg-secondary w-4 text-center rounded-full left-4 bottom-1 text-white sm:left-5">{cart?.length}</div>
+                    <div className="z-10  col-span-1 col-start-1 row-span-1 row-start-1 bg-transparent text-right text-xs text-secondary">
+                      <div className="relative left-4 bottom-1 w-4 rounded-full bg-secondary text-center text-white sm:left-5">
+                        {cart?.length}
+                      </div>
                     </div>
                   )}
                 </Link>
@@ -169,11 +168,11 @@ const Navbar = () => {
               </div>
             </div>
           </div>
-
-          <Disclosure.Panel className="absolute z-10 w-full sm:hidden">
-            <div className="space-y-1 px-2 pb-3 pt-2">
+          <Popover.Overlay className="fixed inset-0 bg-black opacity-50 z-10" />
+          <Popover.Panel className="absolute z-20 mt-2 ml-[5%] w-[90%] rounded-xl overflow-hidden border border-black sm:hidden ">
+            <div className="space-y-1 px-2 pb-3 pt-2 ">
               {navigation.map((item) => (
-                <Disclosure.Button
+                <Popover.Button
                   key={item.name}
                   as={Link}
                   href={item.href}
@@ -188,13 +187,13 @@ const Navbar = () => {
                   }
                 >
                   {item.name}
-                </Disclosure.Button>
+                </Popover.Button>
               ))}
             </div>
-          </Disclosure.Panel>
+          </Popover.Panel>
         </>
       )}
-    </Disclosure>
+    </Popover>
   );
 };
 
