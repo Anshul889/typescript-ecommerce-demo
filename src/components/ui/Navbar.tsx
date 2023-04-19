@@ -168,29 +168,39 @@ const Navbar = () => {
               </div>
             </div>
           </div>
-          <Popover.Overlay className="fixed inset-0 bg-black opacity-50 z-10" />
-          <Popover.Panel className="absolute z-20 mt-2 ml-[5%] w-[90%] rounded-xl overflow-hidden border border-black sm:hidden ">
-            <div className="space-y-1 px-2 pb-3 pt-2 ">
-              {navigation.map((item) => (
-                <Popover.Button
-                  key={item.name}
-                  as={Link}
-                  href={item.href}
-                  className={classNames(
-                    item.href === router.pathname
-                      ? "bg-secondary text-white"
-                      : "text-gray-800 hover:bg-lightred hover:text-white",
-                    "block rounded-md px-3 py-2 text-base font-medium"
-                  )}
-                  aria-current={
-                    item.href === router.pathname ? "page" : undefined
-                  }
-                >
-                  {item.name}
-                </Popover.Button>
-              ))}
-            </div>
-          </Popover.Panel>
+          <Popover.Overlay className="fixed inset-0 z-10 bg-black opacity-50" />
+          <Transition
+            as={Fragment}
+            enter="transition ease-out duration-200"
+            enterFrom="transform opacity-0 scale-95"
+            enterTo="transform opacity-100 scale-100"
+            leave="transition ease-in duration-75"
+            leaveFrom="transform opacity-100 scale-100"
+            leaveTo="transform opacity-0 scale-95"
+          >
+            <Popover.Panel className="absolute z-20 mt-2 ml-[5%] w-[90%] overflow-hidden rounded-xl border border-black sm:hidden ">
+              <div className="space-y-1 px-2 pb-3 pt-2 ">
+                {navigation.map((item) => (
+                  <Popover.Button
+                    key={item.name}
+                    as={Link}
+                    href={item.href}
+                    className={classNames(
+                      item.href === router.pathname
+                        ? "bg-secondary text-white"
+                        : "text-gray-800 hover:bg-lightred hover:text-white",
+                      "block rounded-md px-3 py-2 text-base font-medium"
+                    )}
+                    aria-current={
+                      item.href === router.pathname ? "page" : undefined
+                    }
+                  >
+                    {item.name}
+                  </Popover.Button>
+                ))}
+              </div>
+            </Popover.Panel>
+          </Transition>
         </>
       )}
     </Popover>
