@@ -115,6 +115,7 @@ const Product: NextPage = () => {
           imageURL: data?.imageURL as string,
           price: data?.price as number,
           id: productId,
+          description1: data?.description1 as string,
         };
         if (prevEntries) {
           return [...prevEntries, { userId, productId, quantity, product }];
@@ -194,10 +195,10 @@ const Product: NextPage = () => {
             <div className="scrollbar-hide grid grid-cols-[2px_repeat(4,80%)_2px] gap-6 overflow-scroll md:hidden">
               <div></div>
               <div className="relative h-[80vw] w-full">
-                <NextImage  src={data?.imageURL as string} alt="" fill />
+                <NextImage src={data?.imageURL as string} alt="" fill />
               </div>
               <div className="relative h-[80vw] w-full">
-                <NextImage  src={data?.imageURL2 as string} alt="" fill />
+                <NextImage src={data?.imageURL2 as string} alt="" fill />
               </div>
               <div className="relative h-[80vw] w-full">
                 <NextImage src={data?.imageURL3 as string} alt="" fill />
@@ -228,53 +229,53 @@ const Product: NextPage = () => {
                 </div>
                 <div>
                   {session && userLike && (
-                    <div className='md:w-44'>
-                    <Button fullWidth onClick={handleRemoveLike}>
-                      Remove From Wishlist
-                    </Button>
+                    <div className="md:w-44">
+                      <Button fullWidth onClick={handleRemoveLike}>
+                        Remove From Wishlist
+                      </Button>
                     </div>
                   )}
                   {session && !userLike && (
-                    <div className='md:w-44'>
-                    <Button fullWidth onClick={handleAddLike}>
-                      Add to Wishlist
-                    </Button>
+                    <div className="md:w-44">
+                      <Button fullWidth onClick={handleAddLike}>
+                        Add to Wishlist
+                      </Button>
                     </div>
                   )}
                   {!session && (
-                    <div className='md:w-44'>
-                    <Modal
-                      buttonText="Add To Wishlist"
-                      title="Login To continue"
-                      buttonAction="Login"
-                      buttonLink="/auth/signin"
-                    />
+                    <div className="md:w-44">
+                      <Modal
+                        buttonText="Add To Wishlist"
+                        title="Login To continue"
+                        buttonAction="Login"
+                        buttonLink="/auth/signin"
+                      />
                     </div>
                   )}
                 </div>
                 <div className="my-6">
                   {session && isCart && (
-                    <div className='md:w-44'>
-                    <Button fullWidth onClick={handleRemoveFromCart}>
-                      Remove From Cart
-                    </Button>
+                    <div className="md:w-44">
+                      <Button fullWidth onClick={handleRemoveFromCart}>
+                        Remove From Cart
+                      </Button>
                     </div>
                   )}
                   {session && !isCart && (
-                    <div className='md:w-44'>
-                    <Button fullWidth onClick={handleAddToCart}>
-                      Add to Cart
-                    </Button>
+                    <div className="md:w-44">
+                      <Button fullWidth onClick={handleAddToCart}>
+                        Add to Cart
+                      </Button>
                     </div>
                   )}
                   {!session && (
-                    <div className='md:w-44'>
-                    <Modal
-                      buttonText="Add To Cart"
-                      title="Login To continue"
-                      buttonAction="Login"
-                      buttonLink="/auth/signin"
-                    />
+                    <div className="md:w-44">
+                      <Modal
+                        buttonText="Add To Cart"
+                        title="Login To continue"
+                        buttonAction="Login"
+                        buttonLink="/auth/signin"
+                      />
                     </div>
                   )}
                 </div>
@@ -328,7 +329,9 @@ const Product: NextPage = () => {
               </div>
             </div>
           </div>
-          <h2 className="mx-auto w-[90%] text-2xl font-bold md:w-full">Reviews</h2>
+          <h2 className="mx-auto w-[90%] text-2xl font-bold md:w-full">
+            Reviews
+          </h2>
           <div>
             {typeof data?.reviews.length === "number" &&
             data?.reviews.length > 0 ? (
@@ -370,7 +373,9 @@ const Product: NextPage = () => {
                 </div>
               ))
             ) : (
-              <div className="mx-auto w-[90%] opacity-75 md:w-full">No reviews yet</div>
+              <div className="mx-auto w-[90%] opacity-75 md:w-full">
+                No reviews yet
+              </div>
             )}
           </div>
           <div className="mt-6 mb-16">
