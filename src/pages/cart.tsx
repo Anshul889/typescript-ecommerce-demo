@@ -3,9 +3,19 @@ import React from "react";
 import { api } from "~/utils/api";
 import NextImage from "next/image";
 import { Button } from "~/components/ui/Button";
+import createCheckoutSession from "~/utils/checkout-session";
 import { type NextPage } from "next";
 
 const Cart: NextPage = () => {
+
+  type CartItem = {
+    name: string;
+    price: number;
+    imageURL: string;
+    id: string;
+    description1: string;
+    quantity: number;
+  }
   const { data: session } = useSession();
 
   const { data, isLoading } = api.cart.getUserCart.useQuery(
@@ -23,6 +33,8 @@ const Cart: NextPage = () => {
       return acc + curr.quantity * curr.product.price;
     }, 0);
   }
+
+
 
   const { mutate: removeFromCart } = api.cart.removeFromCart.useMutation({
     onMutate: async ({ userId, productId }) => {
@@ -58,9 +70,11 @@ const Cart: NextPage = () => {
           price: item?.product.price as number,
           imageURL: item?.product.imageURL as string,
           id: item?.productId as string,
+          description1: item?.product.description1 as string,
         };
         response[itemIdx] = {
           product,
+
           quantity: quantity + 1,
           userId: userId,
           productId: productId,
@@ -95,6 +109,7 @@ const Cart: NextPage = () => {
           price: item?.product.price as number,
           imageURL: item?.product.imageURL as string,
           id: item?.productId as string,
+          description1: item?.product.description1 as string,
         };
         response[itemIdx] = {
           product,
@@ -135,6 +150,21 @@ const Cart: NextPage = () => {
       quantity,
     });
   };
+
+  const cartItems : CartItem[] = [];
+  if (data) {
+    //create loop over data and create cart items
+    for (let i = 0; i < data.length; i++) {
+      cartItems.push({
+        name: data[i]?.product.name as string,
+        price: data[i]?.product.price as number,
+        imageURL: data[i]?.product.imageURL   as string,
+        id: data[i]?.productId  as string,
+        description1: data[i]?.product.description1   as string,
+        quantity: data[i]?.quantity as number,
+      })
+    }
+  }
 
   if (isLoading && session) {
     return (
@@ -229,14 +259,16 @@ const Cart: NextPage = () => {
             Use Test Card 4242 4242 4242 4242 for succesful payment
           </div>
         )}
-        {data?.length !== 0 && (
+        {data?.length !== 0 && data !== undefined && (
           <div className="mx-auto my-6 w-[90%] md:w-44">
-            <Button fullWidth>Checkout</Button>
+            <Button fullWidth onClick={() => createCheckoutSession(cartItems)}>Checkout</Button>
           </div>
         )}
       </div>
     );
   }
 };
+
+
 
 export default Cart;

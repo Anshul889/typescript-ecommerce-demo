@@ -107,6 +107,7 @@ export const cartrouter = createTRPCRouter({
               imageURL: true,
               price: true,
               id: true,
+              description1: true,
             },
           },
         },
