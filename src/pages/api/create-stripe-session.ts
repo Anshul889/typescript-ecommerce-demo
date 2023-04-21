@@ -9,7 +9,7 @@ async function CreateStripeSession(req: NextApiRequest , res: NextApiResponse) {
   const redirectURL =
     process.env.NODE_ENV === 'development'
       ? 'http://localhost:3000/'
-      : 'https://next-shop-lime.vercel.app/'
+      : 'https://typescript-ecommerce-anshul889.vercel.app/'
       
   const transformedItems = []
 
