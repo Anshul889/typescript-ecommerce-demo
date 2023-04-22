@@ -1,8 +1,7 @@
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
-import {env} from "../env.mjs"
-const publishableKey = env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
-const stripePromise = loadStripe(publishableKey);
+const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+const stripePromise = loadStripe(publishableKey as string);
 
 type CartItem = {
   id: string;
