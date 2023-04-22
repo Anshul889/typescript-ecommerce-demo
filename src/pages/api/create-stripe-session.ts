@@ -1,5 +1,3 @@
-// ts eslint disable
-
 import { type NextApiRequest, type NextApiResponse } from "next";
 import { env } from "../../env.mjs";
 const stripeKey = env.STRIPE_SECRET_KEY;
