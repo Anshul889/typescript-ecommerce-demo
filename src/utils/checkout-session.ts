@@ -1,4 +1,4 @@
-/* eslint-disable */
+
 
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
@@ -15,9 +15,13 @@ type CartItem = {
   description1: string;
 }
 
+interface Checkout {
+  id: string;
+}
+
 const createCheckOutSession = async (items: CartItem[]) => {
   const stripe = await stripePromise;
-  const checkoutSession = await axios.post("/api/create-stripe-session", {
+  const checkoutSession = await axios.post<Checkout>("/api/create-stripe-session", {
     items,
   });
   if (stripe) {

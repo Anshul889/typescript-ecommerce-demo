@@ -168,7 +168,7 @@ const Navbar = () => {
               </div>
             </div>
           </div>
-          <Popover.Overlay className="fixed inset-0 z-10 bg-black opacity-50" />
+          <Popover.Overlay className="fixed inset-0 z-10 bg-slate-300/50 opacity-100 " />
           <Transition
             as={Fragment}
             enter="transition ease-out duration-200"
@@ -178,7 +178,7 @@ const Navbar = () => {
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95"
           >
-            <Popover.Panel className="absolute z-20 mt-2 ml-[5%] w-[90%] overflow-hidden rounded-xl border border-black sm:hidden ">
+            <Popover.Panel className="absolute z-20 my-2 ml-[5%] w-[90%] overflow-hidden rounded-xl shadow-xl ring-1 ring-secondary sm:hidden">
               <div className="space-y-1 px-2 pb-3 pt-2 ">
                 {navigation.map((item) => (
                   <Popover.Button
