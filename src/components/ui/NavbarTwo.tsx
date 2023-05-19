@@ -81,7 +81,7 @@ function NavbarTwo() {
       <div></div>
       <Menu as="div" className="relative ml-3 self-center justify-self-end">
         <div>
-          <Menu.Button className="flex rounded-full bg-primary text-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-secondary">
+          <Menu.Button className="flex rounded-full bg-primary text-sm focus:outline-none focus:ring-2  focus:ring-secondary">
             <span className="sr-only">Open user menu</span>
             {session ? (
               <div className="relative h-7 w-7 overflow-hidden rounded-full  sm:h-8 sm:w-8">
