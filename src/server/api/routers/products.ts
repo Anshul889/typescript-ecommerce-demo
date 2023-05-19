@@ -1,5 +1,5 @@
-import { z } from 'zod'
-import { createTRPCRouter, publicProcedure } from '../trpc'
+import { z } from "zod";
+import { createTRPCRouter, publicProcedure } from "../trpc";
 
 export const productRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
@@ -10,10 +10,11 @@ export const productRouter = createTRPCRouter({
         price: true,
         imageURL: true,
       },
-    })
+    });
   }),
-  getOne: publicProcedure.input(z.object({ id: z.string() })).query(async ({ input, ctx }) => {
-    if (typeof input.id === 'string') {
+  getOne: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ input, ctx }) => {
       return await ctx.prisma.product.findUnique({
         where: {
           id: input.id,
@@ -21,9 +22,8 @@ export const productRouter = createTRPCRouter({
         include: {
           reviews: true,
         },
-      })
-    }
-  }),
+      });
+    }),
   deleteItem: publicProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ input, ctx }) => {
@@ -31,7 +31,7 @@ export const productRouter = createTRPCRouter({
         where: {
           id: input.id,
         },
-      })
+      });
     }),
   updateItem: publicProcedure
     .input(z.object({ id: z.string(), name: z.string() }))
@@ -43,6 +43,6 @@ export const productRouter = createTRPCRouter({
         data: {
           name: input.name,
         },
-      })
+      });
     }),
-})
+});

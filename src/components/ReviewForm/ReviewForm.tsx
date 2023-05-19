@@ -6,7 +6,7 @@ import StarRating from "~/components/ui/StarRating";
 
 type Props = {
   productId: string;
-  addReview: (review: any) => void;
+  addReview: (review : any) => void;
   userId: string;
   name: string;
   image: string;
@@ -14,7 +14,6 @@ type Props = {
 
 type Inputs = {
   review: string;
-  exampleRequired: string;
 };
 
 const ReviewForm = ({ productId, addReview, userId, name, image }: Props) => {
@@ -24,14 +23,14 @@ const ReviewForm = ({ productId, addReview, userId, name, image }: Props) => {
     formState: { errors },
   } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit = (data: Inputs) => {
     addReview({ userId, productId, rating, review: data.review, name, image });
     console.log(data);
     console.log("rating", rating);
   };
 
-  const [rating, setRating] = useState<number>(0);
-  const [error, setError] = useState<boolean>(false);
+  const [rating, setRating] = useState(0);
+  const [error, setError] = useState(false);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
