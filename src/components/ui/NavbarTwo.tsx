@@ -7,6 +7,8 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import NextImage from "next/image";
 import usericon from "../../../public/user.svg";
+import logo from "../../../public/Crave.webp";
+import carticon from "../../../public/cart-shopping-light.svg";
 
 function NavbarTwo() {
   const navigation = [
@@ -78,74 +80,94 @@ function NavbarTwo() {
           )}
         </Popover>
       </div>
-      <div></div>
-      <Menu as="div" className="relative ml-3 self-center justify-self-end">
-        <div>
-          <Menu.Button className="flex rounded-full bg-primary text-sm focus:outline-none focus:ring-2  focus:ring-secondary">
-            <span className="sr-only">Open user menu</span>
-            {session ? (
-              <div className="relative h-7 w-7 overflow-hidden rounded-full  sm:h-8 sm:w-8">
-                <NextImage src={session.user.image as string} fill alt="" />
-              </div>
-            ) : (
-              <div className="relative h-7 w-7  sm:h-8 sm:w-8">
-                <NextImage src={usericon as string} fill alt="" />
-              </div>
-            )}
-          </Menu.Button>
+      <div className="grid place-content-center">
+        <div className="relative  h-8 w-16 ">
+          <NextImage src={logo} fill alt="" />
         </div>
-        <Transition
-          as={Fragment}
-          enter="transition ease-out duration-100"
-          enterFrom="transform opacity-0 scale-95"
-          enterTo="transform opacity-100 scale-100"
-          leave="transition ease-in duration-75"
-          leaveFrom="transform opacity-100 scale-100"
-          leaveTo="transform opacity-0 scale-95"
-        >
-          <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-primary py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-            <Menu.Item>
-              {({ active }) => (
-                <Link
-                  href="#"
-                  className={classNames(
-                    active ? "bg-gray-100" : "",
-                    "block px-4 py-2 text-sm text-gray-700"
-                  )}
-                >
-                  Your Profile
-                </Link>
-              )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <a
-                  href="#"
-                  className={classNames(
-                    active ? "bg-gray-100" : "",
-                    "block px-4 py-2 text-sm text-gray-700"
-                  )}
-                >
-                  Settings
-                </a>
-              )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <div
-                  onClick={session ? () => void signOut() : () => void signIn()}
-                  className={classNames(
-                    active ? "bg-gray-100" : "",
-                    "block cursor-pointer px-4 py-2 text-sm text-gray-700"
-                  )}
-                >
-                  {session ? "Sign out" : "Sign in"}
+      </div>
+      <div className="grid grid-cols-[40px_40px] justify-self-end ">
+        <Link href="/cart" className="grid self-center justify-self-end">
+          <div className="relative col-span-1 col-start-1  row-span-1 row-start-1 h-7 w-7 sm:h-8 sm:w-8">
+            <NextImage src={carticon as string} fill alt="" />
+          </div>
+          {session && (cart?.length as number) > 0 && (
+            <div className="z-10  col-span-1 col-start-1 row-span-1 row-start-1 bg-transparent text-right text-xs text-secondary">
+              <div className="relative left-4 bottom-1 w-4 rounded-full bg-secondary text-center text-white sm:left-5">
+                {cart?.length}
+              </div>
+            </div>
+          )}
+        </Link>
+        <Menu as="div" className="relative ml-3 self-center justify-self-end">
+          <div>
+            <Menu.Button className="flex rounded-full bg-primary text-sm focus:outline-none focus:ring-2  focus:ring-secondary">
+              <span className="sr-only">Open user menu</span>
+              {session ? (
+                <div className="relative h-7 w-7 overflow-hidden rounded-full  sm:h-8 sm:w-8">
+                  <NextImage src={session.user.image as string} fill alt="" />
+                </div>
+              ) : (
+                <div className="relative h-7 w-7  sm:h-8 sm:w-8">
+                  <NextImage src={usericon as string} fill alt="" />
                 </div>
               )}
-            </Menu.Item>
-          </Menu.Items>
-        </Transition>
-      </Menu>
+            </Menu.Button>
+          </div>
+          <Transition
+            as={Fragment}
+            enter="transition ease-out duration-100"
+            enterFrom="transform opacity-0 scale-95"
+            enterTo="transform opacity-100 scale-100"
+            leave="transition ease-in duration-75"
+            leaveFrom="transform opacity-100 scale-100"
+            leaveTo="transform opacity-0 scale-95"
+          >
+            <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-primary py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <Menu.Item>
+                {({ active }) => (
+                  <Link
+                    href="#"
+                    className={classNames(
+                      active ? "bg-gray-100" : "",
+                      "block px-4 py-2 text-sm text-gray-700"
+                    )}
+                  >
+                    Your Profile
+                  </Link>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <a
+                    href="#"
+                    className={classNames(
+                      active ? "bg-gray-100" : "",
+                      "block px-4 py-2 text-sm text-gray-700"
+                    )}
+                  >
+                    Settings
+                  </a>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <div
+                    onClick={
+                      session ? () => void signOut() : () => void signIn()
+                    }
+                    className={classNames(
+                      active ? "bg-gray-100" : "",
+                      "block cursor-pointer px-4 py-2 text-sm text-gray-700"
+                    )}
+                  >
+                    {session ? "Sign out" : "Sign in"}
+                  </div>
+                )}
+              </Menu.Item>
+            </Menu.Items>
+          </Transition>
+        </Menu>
+      </div>
     </nav>
   );
 }
