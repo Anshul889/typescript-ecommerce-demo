@@ -80,11 +80,11 @@ function Navbar() {
           )}
         </Popover>
       </div>
-      <div className="grid grid-cols-[max-content_1fr] place-content-center gap-x-6">
-        <div className="relative  h-8 w-16 ">
+      <div className="grid sm:grid-cols-[max-content_1fr] place-content-center gap-x-6 grid-cols-[max-content]">
+        <div className="relative  h-8 w-16">
           <NextImage src={logo} fill alt="" />
         </div>
-        <div className="grid grid-cols-[repeat(3,80px)]">
+        <div className="hidden sm:grid sm:grid-cols-[repeat(3,80px)]">
           {navigation.map((item) => (
             <Link
               key={item.name}
