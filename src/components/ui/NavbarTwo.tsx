@@ -30,7 +30,7 @@ function NavbarTwo() {
     }
   );
   return (
-    <nav className="mx-auto grid max-w-7xl grid-cols-3 bg-primary p-2 sm:grid-cols-2 sm:px-6 lg:px-8">
+    <nav className="mx-auto grid max-w-7xl grid-cols-3 bg-primary p-2 sm:grid-cols-2 sm:px-6 lg:px-8 lg:py-4">
       <div className="sm:hidden">
         <Popover>
           {({ open }) => (
@@ -80,9 +80,26 @@ function NavbarTwo() {
           )}
         </Popover>
       </div>
-      <div className="grid place-content-center">
+      <div className="grid grid-cols-[max-content_1fr] place-content-center gap-x-6">
         <div className="relative  h-8 w-16 ">
           <NextImage src={logo} fill alt="" />
+        </div>
+        <div className="grid grid-cols-[repeat(3,80px)]">
+          {navigation.map((item) => (
+            <Link
+              key={item.name}
+              href={item.href}
+              className={classNames(
+                item.href === router.pathname
+                  ? "font-extrabold, underline"
+                  : "",
+                "rounded-md px-3 py-2 font-medium hover:font-bold"
+              )}
+              aria-current={item.href === router.pathname ? "page" : undefined}
+            >
+              {item.name}
+            </Link>
+          ))}
         </div>
       </div>
       <div className="grid grid-cols-[40px_40px] justify-self-end ">
