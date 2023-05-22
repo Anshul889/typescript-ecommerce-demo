@@ -5,6 +5,7 @@ import NextImage from "next/image";
 import { Button } from "~/components/ui/Button";
 import createCheckoutSession from "~/utils/checkout-session";
 import { type NextPage } from "next";
+import Link from "next/link";
 
 const Cart: NextPage = () => {
 
@@ -200,40 +201,40 @@ const Cart: NextPage = () => {
                 key={index}
                 className="md:grid-row-[] my-6 grid grid-cols-[1fr_1.5fr_max-content] gap-x-4 md:grid-cols-[0.3fr_0.9fr_0.3fr_0.3fr_0.3fr]"
               >
-                <div className="relative row-span-2 aspect-square">
+                <Link href={`/meal-starters/${product.productId}`} className="relative row-span-2 aspect-square">
                   <NextImage src={product.product.imageURL} fill alt="" />
-                </div>
-                <div>{product.product.name}</div>
+                </Link>
+                <Link href={`/meal-starters/${product.productId}`}>{product.product.name}</Link>
                 <div className="text-right md:col-start-5">
                   ${product.quantity * product.product.price}.00
                 </div>
                 <div className="text-xl md:col-start-3 md:row-start-1 md:text-center md:text-2xl">
                   {product.quantity > 1 && (
-                    <span
+                    <button
                       className="mx-2 md:mx-3"
                       onClick={() =>
                         handleDecrement(product.productId, product.quantity)
                       }
                     >
                       -
-                    </span>
+                    </button>
                   )}
                   <span className="mx-2 md:mx-3">{product.quantity}</span>
-                  <span
+                  <button
                     className="mx-2 md:mx-3"
                     onClick={() =>
                       handleIncrement(product.productId, product.quantity)
                     }
                   >
                     +
-                  </span>
+                  </button>
                 </div>
-                <div
+                <button
                   onClick={() => handleRemoveFromCart(product.productId)}
                   className="point cursor-pointer text-right text-red-500 underline md:col-start-4 md:row-start-1"
                 >
                   remove
-                </div>
+                </button>
               </div>
             );
           })}
