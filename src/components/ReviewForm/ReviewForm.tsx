@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "~/components/ui/Button";
 import { useForm } from "react-hook-form";
-import { type SubmitHandler } from "react-hook-form/dist/types";
 import StarRating from "~/components/ui/StarRating";
 
 type Props = {

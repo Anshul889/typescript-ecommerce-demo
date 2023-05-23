@@ -6,7 +6,6 @@ import { api } from "~/utils/api";
 
 import "~/styles/globals.css";
 import Navbar from "~/components/ui/Navbar";
-import NavbarTwo from "~/components/ui/NavbarTwo";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,

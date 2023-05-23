@@ -3,7 +3,6 @@ import Head from "next/head";
 import NextImage from "next/image";
 import HeroImg from "../../public/hero.webp";
 import { Button } from "@ui/Button";
-import Link from "next/link";
 
 const Home: NextPage = () => {
   return (

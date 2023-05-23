@@ -1,5 +1,5 @@
-import { cva, VariantProps } from "class-variance-authority";
-import { ButtonOrLink, Props as ButtonOrLinkProps } from "./ButtonOrLink";
+import { cva, type VariantProps } from "class-variance-authority";
+import { ButtonOrLink, type Props as  ButtonOrLinkProps } from "./ButtonOrLink";
 
 const buttonStyles = cva(
   "flex items-center justify-center py-4 rounded-full font-medium focus:outline-none focus:ring-2 focus:ring-offset-white dark:focus:ring-offset-black focus:ring-offset-1 disabled:opacity-60 disabled:pointer-events-none hover:bg-opacity-80",
