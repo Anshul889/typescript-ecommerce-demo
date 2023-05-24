@@ -29,6 +29,8 @@ function Navbar() {
       enabled: !!session?.user?.id,
     }
   );
+
+ 
   return (
     <nav className="mx-auto grid max-w-7xl grid-cols-3 bg-primary p-2 sm:grid-cols-2 sm:px-6 lg:px-8 lg:py-4">
       <div className="sm:hidden">

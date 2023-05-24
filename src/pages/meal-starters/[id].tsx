@@ -46,7 +46,6 @@ const Product: NextPage = () => {
         if (checkUserLike?.result === "epic") {
           setUserLike(true);
         }
-        console.log("userlike", checkUserLike);
       },
     }
   );
@@ -76,9 +75,6 @@ const Product: NextPage = () => {
       },
       {
         enabled: !!session?.user?.id,
-        onSuccess: (isAuthor) => {
-          console.log("author:", isAuthor.result);
-        },
       }
     );
   const { mutate: deleteReview } = api.reviews.deleteReview.useMutation({

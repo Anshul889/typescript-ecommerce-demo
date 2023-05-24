@@ -24,8 +24,6 @@ const ReviewForm = ({ productId, addReview, userId, name, image }: Props) => {
 
   const onSubmit = (data: Inputs) => {
     addReview({ userId, productId, rating, review: data.review, name, image });
-    console.log(data);
-    console.log("rating", rating);
   };
 
   const [rating, setRating] = useState(0);

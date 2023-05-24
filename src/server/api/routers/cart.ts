@@ -112,7 +112,6 @@ export const cartrouter = createTRPCRouter({
           },
         },
       });
-      console.log(response);
       return response;
     }),
 });
