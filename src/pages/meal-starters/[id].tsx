@@ -13,6 +13,7 @@ import ReviewForm from "~/components/ReviewForm/ReviewForm";
 import moment from "moment";
 import Rating from "~/components/ui/Rating";
 import DesktopCarousel from "~/components/Carousel/Carousel";
+import { set } from "zod";
 
 const itemQuantity = [1, 2, 3, 4, 5];
 
@@ -22,6 +23,7 @@ const Product: NextPage = () => {
   const [userLike, setUserLike] = useState(false);
   const [isCart, setCart] = useState(false);
   const [selectedNumber, setSelectedNumber] = useState(1);
+  const [displayForm, setDisplayForm] = useState(false);
 
   const { query } = useRouter();
   const { data: session } = useSession();
@@ -86,6 +88,7 @@ const Product: NextPage = () => {
       await refetch();
       await refetchAuthor();
       setLoading(false);
+      setDisplayForm(true);
     },
   });
   const { mutate: addReview } = api.reviews.addReview.useMutation({
@@ -97,6 +100,7 @@ const Product: NextPage = () => {
       await refetchAuthor();
       toggle(false);
       setLoading(false);
+      setDisplayForm(false);
     },
   });
 
@@ -375,11 +379,13 @@ const Product: NextPage = () => {
             )}
           </div>
           <div className="mt-6 mb-16">
-            <h2 className="mx-auto w-[90%] text-2xl font-bold md:w-full">
-              Submit a Review
-            </h2>
+            {displayForm && (
+              <h2 className="mx-auto w-[90%] text-2xl font-bold md:w-full">
+                Submit a Review
+              </h2>
+            )}
             <div className="mx-auto w-[90%] md:w-full">
-              {session ? (
+              {session && isAuthor?.result === 'fail' && (
                 <ReviewForm
                   userId={session.user.id}
                   productId={query.id as string}
@@ -387,7 +393,9 @@ const Product: NextPage = () => {
                   name={session.user.name as string}
                   image={session.user.image as string}
                 />
-              ) : (
+              )}
+              {session && !displayForm && null}
+              {!session && (
                 <div
                   className="cursor-pointer text-secondary underline"
                   onClick={() => void signIn()}
