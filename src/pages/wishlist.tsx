@@ -39,17 +39,17 @@ const Wishlist = () => {
     removeLike({ userId: session?.user?.id as string, productId: id });
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div className="py-10 w-[80%] mx-auto">Loading...</div>;
   return (
     <div>
       {data?.map((product, index) => {
         return (
           <div
             key={index}
-            className="mx-auto my-6 grid w-[90%] grid-cols-[1fr_1fr_0.3fr] gap-4"
+            className="mx-auto my-6 grid w-[90%] grid-cols-[1fr_1fr_0.3fr] lg:grid-cols-[0.3fr_1fr_0.3fr] lg:w-[80%] gap-4"
           >
             <Link href={`meal-starters/${product.productId}`}>
-              <div className="relative h-36">
+              <div className="relative h-36 lg:h-[210px]">
                 <NextImage src={product.product.imageURL} fill alt="" />
               </div>
             </Link>

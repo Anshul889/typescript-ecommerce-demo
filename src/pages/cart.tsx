@@ -8,7 +8,6 @@ import { type NextPage } from "next";
 import Link from "next/link";
 
 const Cart: NextPage = () => {
-
   type CartItem = {
     name: string;
     price: number;
@@ -16,10 +15,10 @@ const Cart: NextPage = () => {
     id: string;
     description1: string;
     quantity: number;
-  }
+  };
   const { data: session } = useSession();
 
-  const { data, isLoading } = api.cart.getUserCart.useQuery(
+  const { data, isLoading, isSuccess } = api.cart.getUserCart.useQuery(
     {
       userId: session?.user?.id as string,
     },
@@ -34,8 +33,6 @@ const Cart: NextPage = () => {
       return acc + curr.quantity * curr.product.price;
     }, 0);
   }
-
-
 
   const { mutate: removeFromCart } = api.cart.removeFromCart.useMutation({
     onMutate: async ({ userId, productId }) => {
@@ -59,34 +56,36 @@ const Cart: NextPage = () => {
     onMutate: async ({ userId, productId, quantity }) => {
       await utils.cart.getUserCart.cancel();
       const response = utils.cart.getUserCart.getData({ userId });
-      if (!response) {
+      if (typeof response === "undefined") {
         return;
       } else {
         const itemIdx = response.findIndex(
           (item) => item.productId === productId
         );
         const item = response[itemIdx];
-        const product = {
-          name: item?.product.name as string,
-          price: item?.product.price as number,
-          imageURL: item?.product.imageURL as string,
-          id: item?.productId as string,
-          description1: item?.product.description1 as string,
-        };
-        response[itemIdx] = {
-          product,
+        if (item) {
+          const product = {
+            name: item.product.name,
+            price: item.product.price,
+            imageURL: item.product.imageURL,
+            id: item.productId,
+            description1: item.product.description1,
+          };
+          response[itemIdx] = {
+            product,
 
-          quantity: quantity + 1,
-          userId: userId,
-          productId: productId,
-        };
-        utils.cart.getUserCart.setData({ userId }, (prevEntries) => {
-          if (prevEntries) {
-            return [...response];
-          } else {
-            return prevEntries;
-          }
-        });
+            quantity: quantity + 1,
+            userId: userId,
+            productId: productId,
+          };
+          utils.cart.getUserCart.setData({ userId }, (prevEntries) => {
+            if (prevEntries) {
+              return [...response];
+            } else {
+              return prevEntries;
+            }
+          });
+        }
       }
     },
     onSettled: async () => {
@@ -105,26 +104,28 @@ const Cart: NextPage = () => {
           (item) => item.productId === productId
         );
         const item = response[itemIdx];
-        const product = {
-          name: item?.product.name as string,
-          price: item?.product.price as number,
-          imageURL: item?.product.imageURL as string,
-          id: item?.productId as string,
-          description1: item?.product.description1 as string,
-        };
-        response[itemIdx] = {
-          product,
-          quantity: quantity - 1,
-          userId: userId,
-          productId: productId,
-        };
-        utils.cart.getUserCart.setData({ userId }, (prevEntries) => {
-          if (prevEntries) {
-            return [...response];
-          } else {
-            return prevEntries;
-          }
-        });
+        if (item) {
+          const product = {
+            name: item.product.name,
+            price: item.product.price,
+            imageURL: item.product.imageURL,
+            id: item.productId,
+            description1: item.product.description1,
+          };
+          response[itemIdx] = {
+            product,
+            quantity: quantity - 1,
+            userId: userId,
+            productId: productId,
+          };
+          utils.cart.getUserCart.setData({ userId }, (prevEntries) => {
+            if (prevEntries) {
+              return [...response];
+            } else {
+              return prevEntries;
+            }
+          });
+        }
       }
     },
     onSettled: async () => {
@@ -137,33 +138,37 @@ const Cart: NextPage = () => {
   };
 
   const handleIncrement = (id: string, quantity: number) => {
-    incrementQuantity({
-      userId: session?.user?.id as string,
-      productId: id,
-      quantity,
-    });
+    if (session) {
+      incrementQuantity({
+        userId: session.user.id,
+        productId: id,
+        quantity,
+      });
+    }
   };
 
   const handleDecrement = (id: string, quantity: number) => {
-    decrementQuantity({
-      userId: session?.user?.id as string,
-      productId: id,
-      quantity,
-    });
+    if (session) {
+      decrementQuantity({
+        userId: session.user.id,
+        productId: id,
+        quantity,
+      });
+    }
   };
 
-  const cartItems : CartItem[] = [];
+  const cartItems: CartItem[] = [];
   if (data) {
     //create loop over data and create cart items
     for (let i = 0; i < data.length; i++) {
       cartItems.push({
         name: data[i]?.product.name as string,
         price: data[i]?.product.price as number,
-        imageURL: data[i]?.product.imageURL   as string,
-        id: data[i]?.productId  as string,
-        description1: data[i]?.product.description1   as string,
+        imageURL: data[i]?.product.imageURL as string,
+        id: data[i]?.productId as string,
+        description1: data[i]?.product.description1 as string,
         quantity: data[i]?.quantity as number,
-      })
+      });
     }
   }
 
@@ -201,10 +206,15 @@ const Cart: NextPage = () => {
                 key={index}
                 className="md:grid-row-[] my-6 grid grid-cols-[1fr_1.5fr_max-content] gap-x-4 md:grid-cols-[0.3fr_0.9fr_0.3fr_0.3fr_0.3fr]"
               >
-                <Link href={`/meal-starters/${product.productId}`} className="relative row-span-2 aspect-square">
+                <Link
+                  href={`/meal-starters/${product.productId}`}
+                  className="relative row-span-2 aspect-square"
+                >
                   <NextImage src={product.product.imageURL} fill alt="" />
                 </Link>
-                <Link href={`/meal-starters/${product.productId}`}>{product.product.name}</Link>
+                <Link href={`/meal-starters/${product.productId}`}>
+                  {product.product.name}
+                </Link>
                 <div className="text-right md:col-start-5">
                   ${product.quantity * product.product.price}.00
                 </div>
@@ -262,14 +272,14 @@ const Cart: NextPage = () => {
         )}
         {data?.length !== 0 && data !== undefined && (
           <div className="mx-auto my-6 w-[90%] md:w-44">
-            <Button fullWidth onClick={() => createCheckoutSession(cartItems)}>Checkout</Button>
+            <Button fullWidth onClick={() => createCheckoutSession(cartItems)}>
+              Checkout
+            </Button>
           </div>
         )}
       </div>
     );
   }
 };
-
-
 
 export default Cart;

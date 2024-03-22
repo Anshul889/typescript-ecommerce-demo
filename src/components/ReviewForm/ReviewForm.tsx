@@ -13,6 +13,7 @@ type Props = {
 
 type Inputs = {
   review: string;
+  name: string;
 };
 
 const ReviewForm = ({ productId, addReview, userId, name, image }: Props) => {
